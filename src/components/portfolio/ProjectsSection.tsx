@@ -158,7 +158,7 @@ const ProjectsSection = () => {
                     {repo.homepage && (
                       <Button 
                         size="sm" 
-                        className="flex-1 group/btn bg-[var(--gradient-primary)]"
+                        className="flex-1 group/btn bg-primary"
                         asChild
                       >
                         <a 

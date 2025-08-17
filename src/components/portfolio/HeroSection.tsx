@@ -87,7 +87,7 @@ const HeroSection = () => {
             
             <Button 
               size="lg"
-              className="glow-effect group bg-[var(--gradient-primary)] border-0"
+              className="glow-effect group bg-primary border-0"
               asChild
             >
               <a 

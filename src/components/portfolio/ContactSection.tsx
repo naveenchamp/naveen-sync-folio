@@ -143,7 +143,7 @@ const ContactSection = () => {
                   <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--gradient-primary)] hover:opacity-90 transition-opacity"
+                    className="w-full bg-primary hover:bg-primary/90 transition-colors"
                   >
                     {isSubmitting ? (
                       "Sending..."
