@@ -33,7 +33,7 @@ const AboutSection = () => {
           {/* Section Header */}
           <div className="text-center mb-16 fade-in">
             <h2 className="heading-lg mb-6">About Me</h2>
-            <div className="w-20 h-1 bg-[var(--gradient-primary)] mx-auto rounded-full"></div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -105,6 +105,9 @@ const AboutSection = () => {
               ✨ <span className="gradient-text font-semibold">
                 Beyond code, I see user interactions as opportunities to inspire trust and delight.
               </span>
+            </p>
+            <p className="text-lg text-muted-foreground mt-4">
+              📩 Always open to collaborations — let's build the future together.
             </p>
           </div>
         </div>

@@ -38,7 +38,7 @@ const InnovationSection = () => {
           {/* Section Header */}
           <div className="text-center mb-16 fade-in">
             <h2 className="heading-lg mb-6">How I Think</h2>
-            <div className="w-20 h-1 bg-[var(--gradient-primary)] mx-auto rounded-full"></div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
           </div>
 
           {/* Main Philosophy */}
@@ -73,7 +73,7 @@ const InnovationSection = () => {
                 style={{ animationDelay: `${index * 150}ms` }}
               >
                 <div className="space-y-4">
-                  <div className="mx-auto w-16 h-16 rounded-lg bg-[var(--gradient-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="mx-auto w-16 h-16 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                     <principle.icon className="w-8 h-8 text-white" />
                   </div>
                   
@@ -91,11 +91,11 @@ const InnovationSection = () => {
           <div className="text-center mt-16 fade-in">
             <div className="max-w-3xl mx-auto space-y-4">
               <h3 className="text-2xl font-semibold text-foreground">
-                Innovation Through Collaboration
+                Always exploring new technologies and pushing the boundaries of what's possible
               </h3>
               <p className="text-lg text-muted-foreground">
                 The best solutions emerge when diverse perspectives unite around a shared vision. 
-                Let's build something extraordinary together.
+                <span className="gradient-text font-semibold"> Let's chat</span> and build something extraordinary together.
               </p>
             </div>
           </div>

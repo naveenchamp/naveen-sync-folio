@@ -70,7 +70,7 @@ const ContactSection = () => {
               Whether you have a project in mind, want to collaborate, or just want to chat about tech,
               I'd love to hear from you.
             </p>
-            <div className="w-20 h-1 bg-[var(--gradient-primary)] mx-auto rounded-full mt-6"></div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12">

@@ -44,7 +44,11 @@ const TechStackSection = () => {
         { name: "Docker", level: "Learning", color: "bg-blue-400" },
         { name: "AWS Cloud", level: "Learning", color: "bg-orange-600" },
         { name: "Weather Data APIs", level: "Expert", color: "bg-sky-500" },
-        { name: "Cricket Analytics", level: "Expert", color: "bg-green-700" }
+        { name: "Cricket Analytics", level: "Expert", color: "bg-green-700" },
+        { name: "Python Basic", level: "Learning", color: "bg-blue-500" },
+        { name: "Tailwind CSS Basic", level: "Learning", color: "bg-cyan-400" },
+        { name: "TypeScript Basic", level: "Learning", color: "bg-blue-600" },
+        { name: "React Learning", level: "Learning", color: "bg-react-blue" }
       ]
     }
   ];
@@ -69,7 +73,7 @@ const TechStackSection = () => {
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               A comprehensive toolkit built through years of hands-on experience and continuous learning.
             </p>
-            <div className="w-20 h-1 bg-[var(--gradient-primary)] mx-auto rounded-full mt-6"></div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
 
           {/* Tech Grid */}

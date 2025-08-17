@@ -95,7 +95,7 @@ const ProjectsSection = () => {
               Automatically synced from my GitHub repositories. Each project represents a journey 
               of learning, innovation, and problem-solving.
             </p>
-            <div className="w-20 h-1 bg-[var(--gradient-primary)] mx-auto rounded-full mt-6"></div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
 
           {/* Projects Grid */}

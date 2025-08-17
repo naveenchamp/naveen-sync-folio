@@ -67,7 +67,7 @@ const Navigation = () => {
             <div className="hidden md:block">
               <Button 
                 onClick={() => scrollToSection('#contact')}
-                className="bg-[var(--gradient-primary)] hover:opacity-90 transition-opacity"
+                className="bg-primary hover:bg-primary/90 transition-colors"
               >
                 Let's Talk
               </Button>
@@ -102,7 +102,7 @@ const Navigation = () => {
                 ))}
                 <Button 
                   onClick={() => scrollToSection('#contact')}
-                  className="mt-4 bg-[var(--gradient-primary)] hover:opacity-90 transition-opacity"
+                  className="mt-4 bg-primary hover:bg-primary/90 transition-colors"
                 >
                   Let's Talk
                 </Button>
