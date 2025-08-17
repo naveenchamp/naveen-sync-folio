@@ -4,38 +4,47 @@ import { Badge } from "@/components/ui/badge";
 const TechStackSection = () => {
   const techCategories = [
     {
-      category: "Frontend",
+      category: "Frontend Development",
       skills: [
-        { name: "JavaScript", level: "Expert", color: "bg-yellow-500" },
-        { name: "React", level: "Expert", color: "bg-blue-500" },
-        { name: "HTML/CSS", level: "Expert", color: "bg-orange-500" },
-        { name: "TypeScript", level: "Advanced", color: "bg-blue-600" }
+        { name: "JavaScript (ES6+)", level: "Expert", color: "bg-yellow-500" },
+        { name: "React.js", level: "Expert", color: "bg-blue-500" },
+        { name: "HTML5 & CSS3", level: "Expert", color: "bg-orange-500" },
+        { name: "TypeScript", level: "Advanced", color: "bg-blue-600" },
+        { name: "Responsive Design", level: "Expert", color: "bg-green-500" },
+        { name: "Tailwind CSS", level: "Advanced", color: "bg-cyan-500" }
       ]
     },
     {
-      category: "Backend",
+      category: "Backend Development",
       skills: [
         { name: "Node.js", level: "Advanced", color: "bg-green-600" },
         { name: "Python", level: "Expert", color: "bg-blue-700" },
-        { name: "APIs", level: "Expert", color: "bg-purple-500" },
-        { name: "Databases", level: "Advanced", color: "bg-indigo-500" }
+        { name: "RESTful APIs", level: "Expert", color: "bg-purple-500" },
+        { name: "Database Design", level: "Advanced", color: "bg-indigo-500" },
+        { name: "Express.js", level: "Advanced", color: "bg-gray-600" },
+        { name: "SQL & NoSQL", level: "Advanced", color: "bg-orange-600" }
       ]
     },
     {
-      category: "Tools & Platforms",
+      category: "Development Tools",
       skills: [
-        { name: "Git", level: "Expert", color: "bg-red-500" },
-        { name: "GitHub", level: "Expert", color: "bg-gray-800" },
+        { name: "Git & GitHub", level: "Expert", color: "bg-red-500" },
         { name: "VS Code", level: "Expert", color: "bg-blue-600" },
+        { name: "Chrome DevTools", level: "Advanced", color: "bg-green-600" },
+        { name: "Postman", level: "Advanced", color: "bg-orange-500" },
+        { name: "NPM/Yarn", level: "Expert", color: "bg-red-600" },
         { name: "Figma", level: "Intermediate", color: "bg-pink-500" }
       ]
     },
     {
-      category: "Learning in Progress",
+      category: "Specializations & Learning",
       skills: [
+        { name: "Data Analysis", level: "Advanced", color: "bg-purple-600" },
         { name: "Machine Learning", level: "Learning", color: "bg-emerald-500" },
         { name: "Docker", level: "Learning", color: "bg-blue-400" },
-        { name: "AWS", level: "Learning", color: "bg-orange-600" }
+        { name: "AWS Cloud", level: "Learning", color: "bg-orange-600" },
+        { name: "Weather Data APIs", level: "Expert", color: "bg-sky-500" },
+        { name: "Cricket Analytics", level: "Expert", color: "bg-green-700" }
       ]
     }
   ];
