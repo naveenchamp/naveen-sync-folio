@@ -198,9 +198,17 @@ const ContactSection = () => {
                     variant="outline" 
                     className="glow-effect"
                     onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = '/naveen-resume.pdf';
+                      link.download = 'Naveen_Reddy_Tippasani_Resume.pdf';
+                      link.target = '_blank';
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      
                       toast({
-                        title: "Resume Download",
-                        description: "Resume download feature coming soon!",
+                        title: "Resume Downloaded!",
+                        description: "Resume has been downloaded to your system.",
                       });
                     }}
                   >

@@ -41,7 +41,7 @@ const AboutSection = () => {
             <div className="space-y-6 slide-up">
               <div className="space-y-4">
                 <p className="text-lg leading-relaxed text-foreground">
-                  I'm <span className="gradient-text font-semibold">Naveen Reddy Tippasani</span>, 
+                  I'm <span className="text-purple-500 font-semibold">Naveen Reddy Tippasani</span>, 
                   a passionate Full Stack Developer with a mission to turn bold ideas into elegant digital experiences.
                 </p>
                 
@@ -102,9 +102,13 @@ const AboutSection = () => {
           {/* Call to Action */}
           <div className="text-center mt-16 fade-in">
             <p className="text-xl text-muted-foreground">
-              ✨ <span className="gradient-text font-semibold">
+              ✨ <span className="text-primary font-semibold">
                 Beyond code, I see user interactions as opportunities to inspire trust and delight.
               </span>
+            </p>
+            <p className="text-lg text-muted-foreground mt-4">
+              My approach to development is simple: <span className="text-primary font-semibold">think curiosity first</span>, 
+              solve problems systematically, and always prioritize the end-user experience.
             </p>
             <p className="text-lg text-muted-foreground mt-4">
               📩 Always open to collaborations — let's build the future together.
