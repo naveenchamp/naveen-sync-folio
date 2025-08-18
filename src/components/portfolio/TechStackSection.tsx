@@ -36,7 +36,6 @@ const TechStackSection = () => {
     {
       category: "Specializations & Learning",
       skills: [
-        { name: "Data Analysis", level: "Advanced", color: "bg-purple-600" },
         { name: "Machine Learning", level: "Learning", color: "bg-emerald-500" },
         { name: "Weather Data APIs", level: "Expert", color: "bg-sky-500" },
         { name: "Cricket Analytics", level: "Expert", color: "bg-green-700" },
