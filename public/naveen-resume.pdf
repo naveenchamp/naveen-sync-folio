@@ -6,98 +6,200 @@ endobj
 << /Type /Pages /Kids [3 0 R] /Count 1 >>
 endobj
 3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
 endobj
 4 0 obj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
 endobj
 5 0 obj
-<< /Length 2000 >>
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Length 3500 >>
 stream
 BT
-/F1 16 Tf
+/F2 18 Tf
 50 750 Td
-(NAVEEN REDDY TIPPASANI) Tj
-0 -30 Td
-/F1 12 Tf
+(Naveen Reddy Tippasani) Tj
+0 -25 Td
+/F1 10 Tf
 (Kakinada, Andhra Pradesh, 533001 | 9390661948) Tj
-0 -20 Td
+0 -15 Td
 (naveenreddytippasani777.7@gmail.com) Tj
-0 -20 Td
+0 -15 Td
 (https://www.linkedin.com/in/naveen-reddy-tippasani-5500402a5/) Tj
-0 -20 Td
+0 -15 Td
 (https://github.com/naveenchamp) Tj
-0 -40 Td
-/F1 14 Tf
+0 -35 Td
+/F2 14 Tf
 (EDUCATION) Tj
-0 -25 Td
-/F1 12 Tf
+0 -20 Td
+/F2 11 Tf
 (Nxtwave Disruptive Technologies) Tj
-0 -15 Td
-(Industry Ready Certification in Full-stack Development) Tj
-0 -15 Td
+120 0 Td
+/F1 10 Tf
 (Jan 2024 - Ongoing) Tj
+-120 -15 Td
+/F1 10 Tf
+(Industry Ready Certification in Full-stack Development) Tj
 0 -20 Td
-(JAWAHARLAL NEHRU TECHNOLOGICAL UNIVERSITY COLLEGE OF KAKINADA) Tj
-0 -15 Td
-(B Tech - Electrical & Electronics Engineering \(EEE\) - 7.3 CGPA) Tj
-0 -15 Td
+/F2 11 Tf
+(JAWAHARLAL NEHRU TECHNOLOGICAL UNIVERSITY COLLEGE OF) Tj
+0 -12 Td
+(KAKINADA, kakinada) Tj
+200 0 Td
+/F1 10 Tf
 (2022 - 2026) Tj
+-200 -15 Td
+(Bachelor of Technology - Electrical & Electronics Engineering \(EEE\) \(7.3) Tj
 0 -20 Td
-(SASI EDUCATIONAL INSTITUTIONS, Velinvennu) Tj
-0 -15 Td
-(Intermediate - MPC - 95.5%) Tj
-0 -15 Td
+/F2 11 Tf
+(SASI EDUCATIONAL INSTITUTIONS, velivennu) Tj
+180 0 Td
+/F1 10 Tf
 (2021 - 2022) Tj
+-180 -15 Td
+(Intermediate - MPC \(95.5%\)) Tj
 0 -20 Td
-(Secondary School Certificate - 9.2 CGPA) Tj
-0 -15 Td
+200 0 Td
 (2019 - 2020) Tj
-0 -40 Td
-/F1 14 Tf
-(TECHNICAL SKILLS) Tj
-0 -25 Td
-/F1 12 Tf
-(Frontend: HTML, CSS, Bootstrap, JavaScript, React.js) Tj
+-200 -15 Td
+(Secondary School \(10\) Certificate \(9.2 CGPA\)) Tj
+0 -35 Td
+/F2 14 Tf
+(SKILLS) Tj
+0 -20 Td
+/F2 11 Tf
+(Frontend:) Tj
+/F1 10 Tf
+( HTML, CSS, Bootstrap, JavaScript, React.js) Tj
 0 -15 Td
-(Backend: Python, Express, Node.js) Tj
+/F2 11 Tf
+(Backend:) Tj
+/F1 10 Tf
+( Python, Express, Node.js) Tj
 0 -15 Td
-(Databases: SQLite) Tj
+/F2 11 Tf
+(Databases:) Tj
+/F1 10 Tf
+( SQLite) Tj
 0 -15 Td
-(Other: Automation Testing, Data Structures & Algorithms, OOPs, PHP, XR) Tj
-0 -40 Td
-/F1 14 Tf
+/F2 11 Tf
+(Other Skills:) Tj
+/F1 10 Tf
+( Automation Testing, Data Structures & Algorithms,) Tj
+0 -12 Td
+(OOPs, PHP, XR \(AR, VR, MR\)) Tj
+0 -35 Td
+/F2 14 Tf
 (PROJECTS) Tj
-0 -25 Td
-/F1 12 Tf
-(Chatbot - naveenaichatbot.ccbp.tech) Tj
-0 -15 Td
-(Technologies: HTML, CSS, JS, Bootstrap) Tj
 0 -20 Td
-(Todos Application - todospice.ccbp.tech) Tj
+/F2 11 Tf
+(Chatbot) Tj
+/F1 10 Tf
+( \(naveenaichatbot.ccbp.tech\)) Tj
 0 -15 Td
-(Technologies: HTML, CSS, JS, Bootstrap) Tj
+(• Innovative Chatbot designed to offer personalized and engaging interactions with users.) Tj
+0 -12 Td
+(• User-friendly UI created using HTML, CSS, and Bootstrap to display user-chatbot interactions.) Tj
+0 -12 Td
+(• Dynamic display of user inputs and chatbot responses achieved through JavaScript DOM operations and) Tj
+0 -12 Td
+(  Array methods.) Tj
+0 -12 Td
+(• Chatbot responses tailored to user inputs by filtering relevant answers from its predefined list.) Tj
+0 -15 Td
+/F1 9 Tf
+(Technologies used: HTML, CSS, JS, Bootstrap) Tj
 0 -20 Td
-(My Library \(Books Page\) - libraryb00ks.ccbp.tech) Tj
+/F2 11 Tf
+(Todos Application) Tj
+/F1 10 Tf
+( \(todospice.ccbp.tech\)) Tj
 0 -15 Td
-(Technologies: HTML, CSS, Bootstrap) Tj
+(A task management solution, designed to make life easier.) Tj
+0 -12 Td
+(• Streamlined task management through a combination of HTML, CSS, and Bootstrap for an intuitive) Tj
+0 -12 Td
+(  interface.) Tj
+0 -12 Td
+(• Seamless CRUD operations through JavaScript event listeners and dynamic UI updates.) Tj
+0 -12 Td
+(• Secure task persistence with local storage methods, ensuring that your tasks are always available.) Tj
+0 -15 Td
+/F1 9 Tf
+(Technologies used: HTML, CSS, JS, Bootstrap) Tj
 0 -20 Td
-(MCP Learning Path Generator) Tj
+/F2 11 Tf
+(My Library \(Books Page\)) Tj
+/F1 10 Tf
+( \(libraryb00ks.ccbp.tech\)) Tj
 0 -15 Td
-(Technologies: Python, Streamlit) Tj
+(Established an informative website for users to discover my book endorsements and gather details on) Tj
+0 -12 Td
+(well-known books.) Tj
+0 -12 Td
+(• Assembled an attention-grabbing banner area featuring my preferred popular book, incorporating) Tj
+0 -12 Td
+(  various HTML block and inline elements.) Tj
+0 -12 Td
+(• Implemented CSS3 capabilities for design, including background, flex, box model properties, and a) Tj
+0 -12 Td
+(  combination of relative \(vh, vw\) and absolute \(px\) units.) Tj
+0 -15 Td
+/F1 9 Tf
+(Technologies used: HTML, CSS, Bootstrap) Tj
+0 -20 Td
+/F2 11 Tf
+(Model Context Protocol\(MCP\) - Learning Path Generator) Tj
+0 -15 Td
+/F1 10 Tf
+(\(https://naveenchamp-mcp-learning-path-app-absw4u.streamlit.app/\)) Tj
+0 -12 Td
+(This project is a Streamlit-based web application that generates personalized learning paths using the Model) Tj
+0 -12 Td
+(Context Protocol MCP. It integrates with various services including YouTube, Google Drive, and Notion to) Tj
+0 -12 Td
+(create comprehensive learning experiences.) Tj
+0 -15 Td
+/F1 9 Tf
+(Technologies used: Python) Tj
+0 -35 Td
+/F2 14 Tf
+(CERTIFICATES) Tj
+0 -20 Td
+/F2 11 Tf
+(Smart Interviews) Tj
+0 -15 Td
+/F1 10 Tf
+(Proficient in problem-solving and algorithmic thinking, mastered through Smart Interviews with hands-on) Tj
+0 -12 Td
+(coding experience in arrays, linked lists, stacks, queues, trees, graphs, and dynamic programming.) Tj
+0 -35 Td
+/F2 14 Tf
+(ACHIEVEMENTS) Tj
+0 -20 Td
+/F2 11 Tf
+(Data Structures) Tj
+0 -15 Td
+/F1 10 Tf
+(Successfully completed structured problem-solving and advanced data structures training, solving 100+) Tj
+0 -12 Td
+(problems with optimal solutions.) Tj
 ET
 endstream
 endobj
 xref
-0 6
+0 7
 0000000000 65535 f 
 0000000009 00000 n 
 0000000058 00000 n 
 0000000115 00000 n 
 0000000251 00000 n 
 0000000318 00000 n 
+0000000392 00000 n 
 trailer
-<< /Size 6 /Root 1 0 R >>
+<< /Size 7 /Root 1 0 R >>
 startxref
-2370
+3945
 %%EOF
