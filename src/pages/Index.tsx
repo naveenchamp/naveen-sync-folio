@@ -1,11 +1,11 @@
 import Navigation from "@/components/portfolio/Navigation";
 import HeroSection from "@/components/portfolio/HeroSection";
 import AboutSection from "@/components/portfolio/AboutSection";
-import ProjectsSection from "@/components/portfolio/ProjectsSection";
+import EnhancedProjectsSection from "@/components/portfolio/EnhancedProjectsSection";
 import TechStackSection from "@/components/portfolio/TechStackSection";
 import InnovationSection from "@/components/portfolio/InnovationSection";
-import ResumeSection from "@/components/portfolio/ResumeSection";
-import ContactSection from "@/components/portfolio/ContactSection";
+import ResumeDisplay from "@/components/portfolio/ResumeDisplay";
+import EnhancedContactSection from "@/components/portfolio/EnhancedContactSection";
 import Footer from "@/components/portfolio/Footer";
 
 const Index = () => {
@@ -15,11 +15,11 @@ const Index = () => {
       <main>
         <HeroSection />
         <AboutSection />
-        <ProjectsSection />
+        <EnhancedProjectsSection />
         <TechStackSection />
         <InnovationSection />
-        <ResumeSection />
-        <ContactSection />
+        <ResumeDisplay />
+        <EnhancedContactSection />
       </main>
       <Footer />
     </div>

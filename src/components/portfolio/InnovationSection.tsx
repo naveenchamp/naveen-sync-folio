@@ -46,9 +46,9 @@ const InnovationSection = () => {
             <Card className="max-w-4xl mx-auto p-8 md:p-12 bg-background border-border card-hover">
               <blockquote className="space-y-6">
                 <p className="text-xl md:text-2xl leading-relaxed text-foreground font-light">
-                  "I approach problems with <span className="gradient-text font-semibold">curiosity first</span> — 
+                  "I approach problems with <span className="text-[hsl(var(--purple))] font-semibold">curiosity first</span> — 
                   every bug is a puzzle, every feature is an opportunity, and every project is a chance to 
-                  <span className="gradient-text font-semibold"> reimagine what's possible</span>."
+                  <span className="text-[hsl(var(--purple))] font-semibold">reimagine what's possible</span>."
                 </p>
                 
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">

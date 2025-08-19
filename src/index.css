@@ -27,6 +27,10 @@
     --accent-foreground: 220 20% 6%;
     --accent-glow: 270 91% 75%;
 
+    /* Purple variant for special highlights */
+    --purple: 270 95% 75%;
+    --purple-foreground: 220 20% 6%;
+
     /* Muted Elements */
     --muted: 220 15% 12%;
     --muted-foreground: 220 10% 65%;
