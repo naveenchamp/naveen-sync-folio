@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Github, ExternalLink, Loader2, AlertCircle, Star, Calendar } from "lucide-react";
 import { useState, useEffect } from "react";
+import projectPlaceholder from "@/assets/project-placeholder.jpg";
 
 interface GitHubRepo {
   id: number;
@@ -18,7 +19,7 @@ interface GitHubRepo {
 }
 
 interface RepoWithImage extends GitHubRepo {
-  image?: string;
+  image: string;
 }
 
 const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
@@ -29,51 +30,40 @@ const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
   return response.json();
 };
 
-const fetchRepoImage = async (repoName: string): Promise<string | null> => {
+const fetchRepoImage = async (repoName: string): Promise<string> => {
   try {
     // Try to fetch README.md first
     const readmeResponse = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
-    if (!readmeResponse.ok) return null;
-    
-    const readmeData = await readmeResponse.json();
-    const readmeContent = atob(readmeData.content);
-    
-    // Look for image URLs in README content
-    const imageRegex = /!\[.*?\]\((.*?\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi;
-    const match = imageRegex.exec(readmeContent);
-    
-    if (match && match[1]) {
-      let imageUrl = match[1];
-      // Convert relative URLs to absolute GitHub URLs
-      if (!imageUrl.startsWith('http')) {
-        imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imageUrl}`;
-      }
-      return imageUrl;
-    }
-    
-    // Fallback: try common screenshot paths
-    const commonPaths = [
-      'screenshot.png',
-      'demo.png',
-      'preview.png',
-      'screenshots/main.png',
-      'docs/screenshot.png'
-    ];
-    
-    for (const path of commonPaths) {
-      try {
-        const imageResponse = await fetch(`https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${path}`);
-        if (imageResponse.ok) {
-          return `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${path}`;
+    if (readmeResponse.ok) {
+      const readmeData = await readmeResponse.json();
+      const readmeContent = atob(readmeData.content);
+      
+      // Look for image URLs in README content - improved regex
+      const imageRegex = /!\[.*?\]\((.*?\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi;
+      let match;
+      while ((match = imageRegex.exec(readmeContent)) !== null) {
+        let imageUrl = match[1];
+        // Convert relative URLs to absolute GitHub URLs
+        if (!imageUrl.startsWith('http')) {
+          imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imageUrl}`;
         }
-      } catch {
-        continue;
+        
+        // Test if the image actually exists
+        try {
+          const testResponse = await fetch(imageUrl, { method: 'HEAD' });
+          if (testResponse.ok) {
+            return imageUrl;
+          }
+        } catch {
+          continue;
+        }
       }
     }
     
-    return null;
+    // Return placeholder image if no valid image found
+    return projectPlaceholder;
   } catch {
-    return null;
+    return projectPlaceholder;
   }
 };
 
@@ -162,7 +152,7 @@ const ProjectsSection = () => {
     !repo.name.includes('.') && 
     repo.name !== 'naveenchamp' &&
     !repo.name.toLowerCase().includes('profile')
-  ).map(repo => ({ ...repo, image: undefined })) || []);
+  ).map(repo => ({ ...repo, image: projectPlaceholder })) || []);
 
   return (
     <section id="projects" className="py-20 bg-card">
@@ -187,18 +177,16 @@ const ProjectsSection = () => {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 {/* Project Image */}
-                {repo.image && (
-                  <div className="aspect-video bg-muted/20 overflow-hidden">
-                    <img 
-                      src={repo.image} 
-                      alt={`${repo.name} preview`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
+                <div className="aspect-video bg-muted/20 overflow-hidden">
+                  <img 
+                    src={repo.image || projectPlaceholder} 
+                    alt={`${repo.name} preview`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.src = projectPlaceholder;
+                    }}
+                  />
+                </div>
                 
                 <div className="p-6 space-y-4">
                   {/* Project Header */}
