@@ -46,15 +46,15 @@ const InnovationSection = () => {
             <Card className="max-w-4xl mx-auto p-8 md:p-12 bg-background border-border card-hover">
               <blockquote className="space-y-6">
                 <p className="text-xl md:text-2xl leading-relaxed text-foreground font-light">
-                  "I approach problems with <span className="text-[hsl(var(--purple))] font-semibold">curiosity first</span> — 
+                  "I approach problems with <span className="text-[hsl(270_95%_75%)] font-semibold">curiosity first</span> — 
                   every bug is a puzzle, every feature is an opportunity, and every project is a chance to 
-                  <span className="text-[hsl(var(--purple))] font-semibold">reimagine what's possible</span>."
+                  <span className="text-[hsl(270_95%_75%)] font-semibold">reimagine what's possible</span>."
                 </p>
                 
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+                <p className="text-lg md:text-xl text-foreground leading-relaxed">
                   My focus is on creating solutions that feel intuitive for users while being scalable for the future. 
                   I believe great code isn't just written — it's 
-                  <span className="text-primary font-semibold"> crafted with intention, empathy, and vision</span>.
+                  <span className="text-[hsl(217_91%_70%)] font-semibold"> crafted with intention, empathy, and vision</span>.
                 </p>
                 
                 <div className="pt-4">

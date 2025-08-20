@@ -41,17 +41,17 @@ const AboutSection = () => {
             <div className="space-y-6 slide-up">
               <div className="space-y-4">
                 <p className="text-lg leading-relaxed text-foreground">
-                  I'm <span className="text-purple-500 font-semibold">Naveen Reddy Tippasani</span>, 
+                  I'm <span className="text-[hsl(270_95%_75%)] font-semibold">Naveen Reddy Tippasani</span>, 
                   a passionate Full Stack Developer with a mission to turn bold ideas into elegant digital experiences.
                 </p>
                 
-                <p className="text-lg leading-relaxed text-muted-foreground">
+                <p className="text-lg leading-relaxed text-foreground/80">
                   From crafting pixel-perfect frontends to building scalable backends, I thrive at the 
                   intersection of creativity and code. I believe great software isn't just written — it's crafted 
                   with intention, empathy, and a deep understanding of user needs.
                 </p>
 
-                <p className="text-lg leading-relaxed text-muted-foreground">
+                <p className="text-lg leading-relaxed text-foreground/80">
                   My journey spans building weather forecast tools, cricket data systems, AI-driven search 
                   applications, and educational platforms. Each project teaches me something new about the 
                   endless possibilities of code.
@@ -107,7 +107,7 @@ const AboutSection = () => {
               </span>
             </p>
             <p className="text-lg text-muted-foreground mt-4">
-              My approach to development is simple: <span className="text-primary font-semibold">think curiosity first</span>, 
+              My approach to development is simple: <span className="text-[hsl(270_95%_75%)] font-semibold">think curiosity first</span>, 
               solve problems systematically, and always prioritize the end-user experience.
             </p>
             <p className="text-lg text-muted-foreground mt-4">
