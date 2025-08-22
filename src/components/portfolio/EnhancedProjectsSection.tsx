@@ -24,12 +24,65 @@ interface RepoWithImage extends GitHubRepo {
   readmeDescription?: string;
 }
 
+// Fallback project data when GitHub API is rate limited
+const fallbackProjects: RepoWithImage[] = [
+  {
+    id: 1,
+    name: "React-Task-Manager",
+    description: "A modern task management application built with React and TypeScript. Features drag-and-drop functionality, real-time updates, and responsive design.",
+    html_url: "https://github.com/naveenchamp",
+    homepage: "",
+    topics: ["react", "typescript", "tailwindcss"],
+    language: "TypeScript",
+    stargazers_count: 15,
+    updated_at: "2024-01-15",
+    fork: false,
+    image: projectPlaceholder,
+    readmeDescription: "A comprehensive task management solution with modern UI/UX design patterns."
+  },
+  {
+    id: 2,
+    name: "E-Commerce-Platform",
+    description: "Full-stack e-commerce solution with payment integration, inventory management, and admin dashboard.",
+    html_url: "https://github.com/naveenchamp",
+    homepage: "",
+    topics: ["react", "nodejs", "mongodb", "stripe"],
+    language: "JavaScript",
+    stargazers_count: 23,
+    updated_at: "2024-02-10",
+    fork: false,
+    image: projectPlaceholder,
+    readmeDescription: "Complete e-commerce platform with secure payment processing and inventory management."
+  },
+  {
+    id: 3,
+    name: "Weather-Dashboard",
+    description: "Real-time weather dashboard with location-based forecasts, interactive maps, and data visualization.",
+    html_url: "https://github.com/naveenchamp",
+    homepage: "",
+    topics: ["react", "api", "charts", "weather"],
+    language: "JavaScript",
+    stargazers_count: 8,
+    updated_at: "2024-01-28",
+    fork: false,
+    image: projectPlaceholder,
+    readmeDescription: "Interactive weather application with comprehensive forecast data and visualizations."
+  }
+];
+
 const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
   try {
-    const response = await fetch('https://api.github.com/users/naveenchamp/repos?per_page=100&sort=updated');
+    const response = await fetch('https://api.github.com/users/naveenchamp/repos?per_page=20&sort=updated');
+    
+    if (response.status === 403) {
+      console.warn('GitHub API rate limit exceeded, using fallback data');
+      throw new Error('RATE_LIMITED');
+    }
+    
     if (!response.ok) {
       throw new Error(`GitHub API error: ${response.status}`);
     }
+    
     const repos = await response.json();
     console.log('Fetched GitHub repos:', repos.length);
     return repos;
@@ -43,38 +96,16 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
   try {
     console.log(`Fetching image for repo: ${repoName}`);
     
-    // First try common screenshot/demo paths with more comprehensive list
+    // Reduced list of most common image paths to avoid rate limiting
     const commonImagePaths = [
-      // Root level images
-      'preview.png', 'preview.jpg', 'preview.gif', 'preview.webp',
-      'demo.png', 'demo.jpg', 'demo.gif', 'demo.webp',
-      'screenshot.png', 'screenshot.jpg', 'screenshot.gif',
-      'cover.png', 'cover.jpg', 'banner.png', 'banner.jpg',
-      'thumbnail.png', 'thumbnail.jpg', 'hero.png', 'hero.jpg',
-      
-      // Assets folder
+      'preview.png', 'demo.png', 'screenshot.png',
       'assets/preview.png', 'assets/demo.png', 'assets/screenshot.png',
-      'assets/cover.png', 'assets/banner.png', 'assets/thumbnail.png',
-      'assets/hero.png', 'assets/app.png', 'assets/main.png',
-      
-      // Images folder
-      'images/preview.png', 'images/demo.png', 'images/screenshot.png',
-      'images/cover.png', 'images/banner.png', 'images/thumbnail.png',
-      
-      // Docs folder
-      'docs/preview.png', 'docs/demo.png', 'docs/screenshot.png',
-      'docs/images/preview.png', 'docs/assets/screenshot.png',
-      
-      // GitHub specific
-      '.github/preview.png', '.github/demo.png', '.github/screenshot.png',
-      '.github/assets/preview.png', '.github/images/demo.png',
-      
-      // Public folder (common in React apps)
-      'public/preview.png', 'public/screenshot.png', 'public/demo.png'
+      'images/preview.png', 'images/demo.png', 
+      'docs/preview.png', 'public/preview.png'
     ];
 
-    // Test each common path with rate limiting
-    for (let i = 0; i < commonImagePaths.length; i++) {
+    // Test each path with exponential backoff
+    for (let i = 0; i < Math.min(commonImagePaths.length, 5); i++) {
       const imagePath = commonImagePaths[i];
       try {
         const imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imagePath}`;
@@ -84,10 +115,8 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
           return imageUrl;
         }
         
-        // Add small delay to avoid rate limiting
-        if (i % 10 === 0) {
-          await new Promise(resolve => setTimeout(resolve, 100));
-        }
+        // Add delay to prevent rapid requests
+        await new Promise(resolve => setTimeout(resolve, 200));
       } catch (error) {
         console.warn(`Failed to check ${imagePath} for ${repoName}:`, error);
         continue;
@@ -139,25 +168,30 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
 const fetchRepoReadme = async (repoName: string): Promise<string> => {
   try {
     const response = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
+    
+    if (response.status === 403) {
+      console.warn(`Rate limited when fetching README for ${repoName}`);
+      return '';
+    }
+    
     if (!response.ok) return '';
     
     const data = await response.json();
     const content = atob(data.content);
     
-    // Remove markdown formatting and extract meaningful content
+    // Extract meaningful content with improved parsing
     let cleanContent = content
-      .replace(/```[\s\S]*?```/g, '') // Remove code blocks
-      .replace(/`[^`]+`/g, '') // Remove inline code
-      .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to text
-      .replace(/#{1,6}\s*/g, '') // Remove headers
-      .replace(/[*_]{1,2}([^*_]+)[*_]{1,2}/g, '$1') // Remove bold/italic
-      .replace(/^\s*[-*+]\s+/gm, '') // Remove bullet points
-      .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered lists
-      .replace(/\n{3,}/g, '\n\n') // Normalize line breaks
+      .replace(/```[\s\S]*?```/g, '') 
+      .replace(/`[^`]+`/g, '') 
+      .replace(/!\[.*?\]\(.*?\)/g, '') 
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') 
+      .replace(/#{1,6}\s*/g, '') 
+      .replace(/[*_]{1,2}([^*_]+)[*_]{1,2}/g, '$1') 
+      .replace(/^\s*[-*+]\s+/gm, '') 
+      .replace(/^\s*\d+\.\s+/gm, '') 
+      .replace(/\n{3,}/g, '\n\n') 
       .trim();
 
-    // Extract the most relevant description (first substantial paragraph)
     const paragraphs = cleanContent.split('\n\n').filter(p => p.trim().length > 30);
     const description = paragraphs[0] || cleanContent.split('\n').find(line => 
       line.trim().length > 30 && 
@@ -167,7 +201,8 @@ const fetchRepoReadme = async (repoName: string): Promise<string> => {
     );
     
     return description ? description.substring(0, 150) + (description.length > 150 ? '...' : '') : '';
-  } catch {
+  } catch (error) {
+    console.warn(`Error fetching README for ${repoName}:`, error);
     return '';
   }
 };
@@ -180,12 +215,25 @@ const ProjectsSection = () => {
   const { data: repos, isLoading, error } = useQuery({
     queryKey: ['github-repos'],
     queryFn: fetchGitHubRepos,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    retry: (failureCount, error) => {
+      // Don't retry on rate limit errors
+      if (error?.message === 'RATE_LIMITED') return false;
+      return failureCount < 2;
+    },
   });
 
-  // Load images when repos are available
+  // Load images when repos are available or use fallback
   useEffect(() => {
     const loadImages = async () => {
+      // Use fallback data if GitHub API failed due to rate limiting
+      if (error?.message === 'RATE_LIMITED' || (error && !repos)) {
+        console.log('Using fallback project data due to API issues');
+        setReposWithImages(fallbackProjects);
+        setImagesLoaded(true);
+        return;
+      }
+
       if (repos && !imagesLoaded) {
         console.log('Loading images for repos...');
         setImageLoadErrors([]);
@@ -194,35 +242,47 @@ const ProjectsSection = () => {
           !repo.name.includes('.') && 
           repo.name !== 'naveenchamp' &&
           !repo.name.toLowerCase().includes('profile') &&
-          !repo.fork && // Exclude forked repos
-          repo.stargazers_count >= 0 // Include all for now
+          !repo.fork
         );
 
         console.log('Filtered repos:', filteredRepos.length);
 
-        const reposWithImagePromises = filteredRepos.map(async (repo) => {
-          try {
-            const [image, readmeDescription] = await Promise.all([
-              fetchRepoImage(repo.name),
-              fetchRepoReadme(repo.name)
-            ]);
-            return { ...repo, image, readmeDescription } as RepoWithImage;
-          } catch (error) {
-            console.error(`Error loading data for ${repo.name}:`, error);
-            setImageLoadErrors(prev => [...prev, repo.name]);
-            return { ...repo, image: projectPlaceholder, readmeDescription: '' } as RepoWithImage;
-          }
-        });
+        // Process repos in batches to avoid overwhelming the API
+        const batchSize = 3;
+        const reposWithImageResults: RepoWithImage[] = [];
 
-        const results = await Promise.all(reposWithImagePromises);
-        console.log('Loaded repos with images:', results.length);
-        setReposWithImages(results);
+        for (let i = 0; i < filteredRepos.length; i += batchSize) {
+          const batch = filteredRepos.slice(i, i + batchSize);
+          
+          const batchPromises = batch.map(async (repo) => {
+            try {
+              // Only fetch images, skip README to avoid rate limits
+              const image = await fetchRepoImage(repo.name);
+              return { ...repo, image, readmeDescription: repo.description || '' } as RepoWithImage;
+            } catch (error) {
+              console.error(`Error loading data for ${repo.name}:`, error);
+              setImageLoadErrors(prev => [...prev, repo.name]);
+              return { ...repo, image: projectPlaceholder, readmeDescription: '' } as RepoWithImage;
+            }
+          });
+
+          const batchResults = await Promise.all(batchPromises);
+          reposWithImageResults.push(...batchResults);
+          
+          // Add delay between batches
+          if (i + batchSize < filteredRepos.length) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+
+        console.log('Loaded repos with images:', reposWithImageResults.length);
+        setReposWithImages(reposWithImageResults);
         setImagesLoaded(true);
       }
     };
 
     loadImages();
-  }, [repos, imagesLoaded]);
+  }, [repos, imagesLoaded, error]);
 
   const getProjectTitle = (name: string) => {
     return name
@@ -258,24 +318,33 @@ const ProjectsSection = () => {
     );
   }
 
-  if (error) {
+  if (error && error.message !== 'RATE_LIMITED') {
     return (
       <section className="py-20 bg-card">
         <div className="container mx-auto px-6">
           <div className="text-center">
             <AlertCircle className="w-8 h-8 mx-auto text-destructive" />
-            <p className="mt-4 text-muted-foreground">Failed to load projects. Please try again later.</p>
+            <p className="mt-4 text-muted-foreground">Unable to load live projects. Showing sample projects instead.</p>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="mt-4"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </Button>
           </div>
         </div>
       </section>
     );
   }
 
-  const displayRepos: RepoWithImage[] = imagesLoaded ? reposWithImages : (repos?.filter(repo => 
-    !repo.name.includes('.') && 
-    repo.name !== 'naveenchamp' &&
-    !repo.name.toLowerCase().includes('profile')
-  ).map(repo => ({ ...repo, image: projectPlaceholder })) || []);
+  // Show fallback projects if rate limited or failed, otherwise show loaded repos
+  const displayRepos: RepoWithImage[] = (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
+    ? fallbackProjects 
+    : reposWithImages;
+
+  const shouldShowRateLimitWarning = error?.message === 'RATE_LIMITED';
 
   return (
     <section id="projects" className="py-20 bg-card">
@@ -285,9 +354,16 @@ const ProjectsSection = () => {
           <div className="text-center mb-16 fade-in">
             <h2 className="heading-lg mb-6">Featured Projects</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Automatically synced from my GitHub repositories with images from README files. Each project represents a journey 
-              of learning, innovation, and problem-solving.
+              {shouldShowRateLimitWarning 
+                ? "Showing sample projects due to API rate limits. Live GitHub sync will resume shortly."
+                : "Automatically synced from my GitHub repositories. Each project represents a journey of learning, innovation, and problem-solving."
+              }
             </p>
+            {shouldShowRateLimitWarning && (
+              <div className="mt-4 p-3 bg-warning/10 border border-warning/20 rounded-lg inline-block">
+                <p className="text-sm text-warning">⚠️ GitHub API temporarily unavailable - showing sample projects</p>
+              </div>
+            )}
             <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
 
