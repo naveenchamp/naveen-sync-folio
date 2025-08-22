@@ -16,6 +16,7 @@ interface GitHubRepo {
   language: string;
   stargazers_count: number;
   updated_at: string;
+  fork: boolean;
 }
 
 interface RepoWithImage extends GitHubRepo {
@@ -24,38 +25,71 @@ interface RepoWithImage extends GitHubRepo {
 }
 
 const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
-  const response = await fetch('https://api.github.com/users/naveenchamp/repos?sort=updated&per_page=20');
-  if (!response.ok) {
-    throw new Error('Failed to fetch repositories');
+  try {
+    const response = await fetch('https://api.github.com/users/naveenchamp/repos?per_page=100&sort=updated');
+    if (!response.ok) {
+      throw new Error(`GitHub API error: ${response.status}`);
+    }
+    const repos = await response.json();
+    console.log('Fetched GitHub repos:', repos.length);
+    return repos;
+  } catch (error) {
+    console.error('Error fetching GitHub repos:', error);
+    throw error;
   }
-  return response.json();
 };
 
 const fetchRepoImage = async (repoName: string): Promise<string> => {
   try {
-    // First try common screenshot/demo paths
+    console.log(`Fetching image for repo: ${repoName}`);
+    
+    // First try common screenshot/demo paths with more comprehensive list
     const commonImagePaths = [
-      'preview.png', 'preview.jpg', 'preview.gif',
-      'demo.png', 'demo.jpg', 'demo.gif',
-      'screenshot.png', 'screenshot.jpg',
-      'cover.png', 'cover.jpg',
-      'banner.png', 'banner.jpg',
-      'thumbnail.png', 'thumbnail.jpg',
+      // Root level images
+      'preview.png', 'preview.jpg', 'preview.gif', 'preview.webp',
+      'demo.png', 'demo.jpg', 'demo.gif', 'demo.webp',
+      'screenshot.png', 'screenshot.jpg', 'screenshot.gif',
+      'cover.png', 'cover.jpg', 'banner.png', 'banner.jpg',
+      'thumbnail.png', 'thumbnail.jpg', 'hero.png', 'hero.jpg',
+      
+      // Assets folder
       'assets/preview.png', 'assets/demo.png', 'assets/screenshot.png',
+      'assets/cover.png', 'assets/banner.png', 'assets/thumbnail.png',
+      'assets/hero.png', 'assets/app.png', 'assets/main.png',
+      
+      // Images folder
       'images/preview.png', 'images/demo.png', 'images/screenshot.png',
+      'images/cover.png', 'images/banner.png', 'images/thumbnail.png',
+      
+      // Docs folder
       'docs/preview.png', 'docs/demo.png', 'docs/screenshot.png',
-      '.github/preview.png', '.github/demo.png', '.github/screenshot.png'
+      'docs/images/preview.png', 'docs/assets/screenshot.png',
+      
+      // GitHub specific
+      '.github/preview.png', '.github/demo.png', '.github/screenshot.png',
+      '.github/assets/preview.png', '.github/images/demo.png',
+      
+      // Public folder (common in React apps)
+      'public/preview.png', 'public/screenshot.png', 'public/demo.png'
     ];
 
-    // Test each common path
-    for (const imagePath of commonImagePaths) {
+    // Test each common path with rate limiting
+    for (let i = 0; i < commonImagePaths.length; i++) {
+      const imagePath = commonImagePaths[i];
       try {
         const imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imagePath}`;
         const response = await fetch(imageUrl, { method: 'HEAD' });
         if (response.ok) {
+          console.log(`Found image for ${repoName}: ${imagePath}`);
           return imageUrl;
         }
-      } catch {
+        
+        // Add small delay to avoid rate limiting
+        if (i % 10 === 0) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+      } catch (error) {
+        console.warn(`Failed to check ${imagePath} for ${repoName}:`, error);
         continue;
       }
     }
@@ -141,6 +175,7 @@ const fetchRepoReadme = async (repoName: string): Promise<string> => {
 const ProjectsSection = () => {
   const [reposWithImages, setReposWithImages] = useState<RepoWithImage[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [imageLoadErrors, setImageLoadErrors] = useState<string[]>([]);
 
   const { data: repos, isLoading, error } = useQuery({
     queryKey: ['github-repos'],
@@ -152,21 +187,35 @@ const ProjectsSection = () => {
   useEffect(() => {
     const loadImages = async () => {
       if (repos && !imagesLoaded) {
+        console.log('Loading images for repos...');
+        setImageLoadErrors([]);
+        
         const filteredRepos = repos.filter(repo => 
           !repo.name.includes('.') && 
           repo.name !== 'naveenchamp' &&
-          !repo.name.toLowerCase().includes('profile')
+          !repo.name.toLowerCase().includes('profile') &&
+          !repo.fork && // Exclude forked repos
+          repo.stargazers_count >= 0 // Include all for now
         );
 
+        console.log('Filtered repos:', filteredRepos.length);
+
         const reposWithImagePromises = filteredRepos.map(async (repo) => {
-          const [image, readmeDescription] = await Promise.all([
-            fetchRepoImage(repo.name),
-            fetchRepoReadme(repo.name)
-          ]);
-          return { ...repo, image, readmeDescription } as RepoWithImage;
+          try {
+            const [image, readmeDescription] = await Promise.all([
+              fetchRepoImage(repo.name),
+              fetchRepoReadme(repo.name)
+            ]);
+            return { ...repo, image, readmeDescription } as RepoWithImage;
+          } catch (error) {
+            console.error(`Error loading data for ${repo.name}:`, error);
+            setImageLoadErrors(prev => [...prev, repo.name]);
+            return { ...repo, image: projectPlaceholder, readmeDescription: '' } as RepoWithImage;
+          }
         });
 
         const results = await Promise.all(reposWithImagePromises);
+        console.log('Loaded repos with images:', results.length);
         setReposWithImages(results);
         setImagesLoaded(true);
       }
@@ -250,16 +299,25 @@ const ProjectsSection = () => {
                 className="group bg-background border-border card-hover overflow-hidden"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                {/* Project Image */}
-                <div className="aspect-video bg-muted/20 overflow-hidden">
+                 {/* Project Image */}
+                <div className="aspect-video bg-muted/20 overflow-hidden relative">
                   <img 
                     src={repo.image || projectPlaceholder} 
-                    alt={`${repo.name} preview`}
+                    alt={`${getProjectTitle(repo.name)} preview`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
+                      console.error(`Image failed to load for ${repo.name}`);
                       e.currentTarget.src = projectPlaceholder;
                     }}
+                    onLoad={() => {
+                      console.log(`Image loaded successfully for ${repo.name}`);
+                    }}
                   />
+                  {imageLoadErrors.includes(repo.name) && (
+                    <div className="absolute top-2 right-2 bg-warning/20 text-warning text-xs px-2 py-1 rounded">
+                      ⚠️ Image issue
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6 space-y-4">
