@@ -20,6 +20,7 @@ interface GitHubRepo {
 
 interface RepoWithImage extends GitHubRepo {
   image: string;
+  readmeDescription?: string;
 }
 
 const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
@@ -32,38 +33,108 @@ const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
 
 const fetchRepoImage = async (repoName: string): Promise<string> => {
   try {
-    // Try to fetch README.md first
+    // First try common screenshot/demo paths
+    const commonImagePaths = [
+      'preview.png', 'preview.jpg', 'preview.gif',
+      'demo.png', 'demo.jpg', 'demo.gif',
+      'screenshot.png', 'screenshot.jpg',
+      'cover.png', 'cover.jpg',
+      'banner.png', 'banner.jpg',
+      'thumbnail.png', 'thumbnail.jpg',
+      'assets/preview.png', 'assets/demo.png', 'assets/screenshot.png',
+      'images/preview.png', 'images/demo.png', 'images/screenshot.png',
+      'docs/preview.png', 'docs/demo.png', 'docs/screenshot.png',
+      '.github/preview.png', '.github/demo.png', '.github/screenshot.png'
+    ];
+
+    // Test each common path
+    for (const imagePath of commonImagePaths) {
+      try {
+        const imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imagePath}`;
+        const response = await fetch(imageUrl, { method: 'HEAD' });
+        if (response.ok) {
+          return imageUrl;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    // Try to fetch README.md for embedded images
     const readmeResponse = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
     if (readmeResponse.ok) {
       const readmeData = await readmeResponse.json();
       const readmeContent = atob(readmeData.content);
       
-      // Look for image URLs in README content - improved regex
-      const imageRegex = /!\[.*?\]\((.*?\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi;
-      let match;
-      while ((match = imageRegex.exec(readmeContent)) !== null) {
-        let imageUrl = match[1];
-        // Convert relative URLs to absolute GitHub URLs
-        if (!imageUrl.startsWith('http')) {
-          imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imageUrl}`;
-        }
-        
-        // Test if the image actually exists
-        try {
-          const testResponse = await fetch(imageUrl, { method: 'HEAD' });
-          if (testResponse.ok) {
-            return imageUrl;
+      // Look for image URLs in README - multiple patterns
+      const imagePatterns = [
+        /!\[.*?\]\((.*?\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi,
+        /<img[^>]+src=["']([^"']+\.(?:png|jpg|jpeg|gif|webp|svg))["'][^>]*>/gi,
+        /https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)/gi
+      ];
+
+      for (const pattern of imagePatterns) {
+        const matches = [...readmeContent.matchAll(pattern)];
+        for (const match of matches) {
+          let imageUrl = match[1] || match[0];
+          
+          // Convert relative URLs to absolute GitHub URLs
+          if (!imageUrl.startsWith('http')) {
+            imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imageUrl}`;
           }
-        } catch {
-          continue;
+          
+          // Test if the image actually exists
+          try {
+            const testResponse = await fetch(imageUrl, { method: 'HEAD' });
+            if (testResponse.ok) {
+              return imageUrl;
+            }
+          } catch {
+            continue;
+          }
         }
       }
     }
     
-    // Return placeholder image if no valid image found
     return projectPlaceholder;
   } catch {
     return projectPlaceholder;
+  }
+};
+
+const fetchRepoReadme = async (repoName: string): Promise<string> => {
+  try {
+    const response = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
+    if (!response.ok) return '';
+    
+    const data = await response.json();
+    const content = atob(data.content);
+    
+    // Remove markdown formatting and extract meaningful content
+    let cleanContent = content
+      .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+      .replace(/`[^`]+`/g, '') // Remove inline code
+      .replace(/!\[.*?\]\(.*?\)/g, '') // Remove images
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Convert links to text
+      .replace(/#{1,6}\s*/g, '') // Remove headers
+      .replace(/[*_]{1,2}([^*_]+)[*_]{1,2}/g, '$1') // Remove bold/italic
+      .replace(/^\s*[-*+]\s+/gm, '') // Remove bullet points
+      .replace(/^\s*\d+\.\s+/gm, '') // Remove numbered lists
+      .replace(/\n{3,}/g, '\n\n') // Normalize line breaks
+      .trim();
+
+    // Extract the most relevant description (first substantial paragraph)
+    const paragraphs = cleanContent.split('\n\n').filter(p => p.trim().length > 30);
+    const description = paragraphs[0] || cleanContent.split('\n').find(line => 
+      line.trim().length > 30 && 
+      !line.includes('Installation') &&
+      !line.includes('Usage') &&
+      !line.includes('Getting Started')
+    );
+    
+    return description ? description.substring(0, 150) + (description.length > 150 ? '...' : '') : '';
+  } catch {
+    return '';
   }
 };
 
@@ -88,8 +159,11 @@ const ProjectsSection = () => {
         );
 
         const reposWithImagePromises = filteredRepos.map(async (repo) => {
-          const image = await fetchRepoImage(repo.name);
-          return { ...repo, image } as RepoWithImage;
+          const [image, readmeDescription] = await Promise.all([
+            fetchRepoImage(repo.name),
+            fetchRepoReadme(repo.name)
+          ]);
+          return { ...repo, image, readmeDescription } as RepoWithImage;
         });
 
         const results = await Promise.all(reposWithImagePromises);
@@ -118,8 +192,8 @@ const ProjectsSection = () => {
     return ['General Project'];
   };
 
-  const getProjectDescription = (repo: GitHubRepo) => {
-    return repo.description || "Innovative project showcasing modern development practices.";
+  const getProjectDescription = (repo: RepoWithImage) => {
+    return repo.readmeDescription || repo.description || "Innovative project showcasing modern development practices.";
   };
 
   if (isLoading) {
