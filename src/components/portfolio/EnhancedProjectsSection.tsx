@@ -96,7 +96,8 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
   try {
     console.log(`Fetching image for repo: ${repoName}`);
     
-    // Reduced list of most common image paths to avoid rate limiting
+    // Try both main and master branches for image paths
+    const branches = ['main', 'master'];
     const commonImagePaths = [
       'preview.png', 'demo.png', 'screenshot.png',
       'assets/preview.png', 'assets/demo.png', 'assets/screenshot.png',
@@ -104,63 +105,65 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
       'docs/preview.png', 'public/preview.png'
     ];
 
-    // Test each path with exponential backoff
-    for (let i = 0; i < Math.min(commonImagePaths.length, 5); i++) {
-      const imagePath = commonImagePaths[i];
-      try {
-        const imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imagePath}`;
-        const response = await fetch(imageUrl, { method: 'HEAD' });
-        if (response.ok) {
-          console.log(`Found image for ${repoName}: ${imagePath}`);
-          return imageUrl;
+    // Test each branch and path combination
+    for (const branch of branches) {
+      for (let i = 0; i < Math.min(commonImagePaths.length, 3); i++) {
+        const imagePath = commonImagePaths[i];
+        try {
+          const imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/${branch}/${imagePath}`;
+          const response = await fetch(imageUrl, { method: 'HEAD' });
+          if (response.ok) {
+            console.log(`Found image for ${repoName}: ${imagePath} on ${branch}`);
+            return imageUrl;
+          }
+        } catch (error) {
+          console.warn(`Failed to check ${imagePath} for ${repoName} on ${branch}:`, error);
+          continue;
         }
-        
-        // Add delay to prevent rapid requests
-        await new Promise(resolve => setTimeout(resolve, 200));
-      } catch (error) {
-        console.warn(`Failed to check ${imagePath} for ${repoName}:`, error);
-        continue;
       }
     }
 
     // Try to fetch README.md for embedded images
-    const readmeResponse = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
-    if (readmeResponse.ok) {
-      const readmeData = await readmeResponse.json();
-      const readmeContent = atob(readmeData.content);
-      
-      // Look for image URLs in README - multiple patterns
-      const imagePatterns = [
-        /!\[.*?\]\((.*?\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi,
-        /<img[^>]+src=["']([^"']+\.(?:png|jpg|jpeg|gif|webp|svg))["'][^>]*>/gi,
-        /https?:\/\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)/gi
-      ];
+    try {
+      const readmeResponse = await fetch(`https://api.github.com/repos/naveenchamp/${repoName}/readme`);
+      if (readmeResponse.ok) {
+        const readmeData = await readmeResponse.json();
+        const readmeContent = atob(readmeData.content);
+        
+        // Look for valid image URLs in README with improved patterns
+        const imagePatterns = [
+          /!\[.*?\]\((https?:\/\/[^\s)]+\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi,
+          /<img[^>]+src=["'](https?:\/\/[^"']+\.(?:png|jpg|jpeg|gif|webp|svg))["'][^>]*>/gi,
+          /https?:\/\/assets\.ccbp\.in\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)/gi
+        ];
 
-      for (const pattern of imagePatterns) {
-        const matches = [...readmeContent.matchAll(pattern)];
-        for (const match of matches) {
-          let imageUrl = match[1] || match[0];
-          
-          // Convert relative URLs to absolute GitHub URLs
-          if (!imageUrl.startsWith('http')) {
-            imageUrl = `https://raw.githubusercontent.com/naveenchamp/${repoName}/main/${imageUrl}`;
-          }
-          
-          // Test if the image actually exists
-          try {
-            const testResponse = await fetch(imageUrl, { method: 'HEAD' });
-            if (testResponse.ok) {
-              return imageUrl;
+        for (const pattern of imagePatterns) {
+          const matches = [...readmeContent.matchAll(pattern)];
+          for (const match of matches) {
+            const imageUrl = match[1] || match[0];
+            
+            // Validate that it's a proper HTTP URL
+            if (imageUrl && imageUrl.startsWith('http')) {
+              try {
+                const testResponse = await fetch(imageUrl, { method: 'HEAD' });
+                if (testResponse.ok) {
+                  console.log(`Found README image for ${repoName}: ${imageUrl}`);
+                  return imageUrl;
+                }
+              } catch {
+                continue;
+              }
             }
-          } catch {
-            continue;
           }
         }
       }
+    } catch (error) {
+      console.warn(`Failed to fetch README for ${repoName}:`, error);
     }
     
     return projectPlaceholder;
-  } catch {
+  } catch (error) {
+    console.error(`Error fetching image for ${repoName}:`, error);
     return projectPlaceholder;
   }
 };
@@ -302,7 +305,18 @@ const ProjectsSection = () => {
   };
 
   const getProjectDescription = (repo: RepoWithImage) => {
-    return repo.readmeDescription || repo.description || "Innovative project showcasing modern development practices.";
+    const description = repo.readmeDescription || repo.description;
+    if (!description || description.length < 20) {
+      // Generate meaningful descriptions based on repo name and topics
+      const projectType = repo.topics?.includes('react') ? 'React application' : 
+                         repo.topics?.includes('javascript') ? 'JavaScript project' :
+                         repo.topics?.includes('typescript') ? 'TypeScript application' :
+                         'Web application';
+      
+      const features = repo.topics?.slice(0, 2).join(' and ') || 'modern web technologies';
+      return `A ${projectType} built with ${features}, showcasing innovative development practices and clean code architecture.`;
+    }
+    return description;
   };
 
   if (isLoading) {
