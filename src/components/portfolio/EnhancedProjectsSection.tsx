@@ -1,10 +1,12 @@
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Github, ExternalLink, Loader2, AlertCircle, Star, Calendar } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import projectPlaceholder from "@/assets/project-placeholder.jpg";
+import ProjectFilters from "./ProjectFilters";
 
 interface GitHubRepo {
   id: number;
@@ -226,6 +228,8 @@ const ProjectsSection = () => {
   const [reposWithImages, setReposWithImages] = useState<RepoWithImage[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [imageLoadErrors, setImageLoadErrors] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { data: repos, isLoading, error } = useQuery({
     queryKey: ['github-repos'],
@@ -370,6 +374,28 @@ const ProjectsSection = () => {
     ? fallbackProjects 
     : reposWithImages;
 
+  // Get unique categories from repos
+  const categories = useMemo(() => {
+    const allTopics = displayRepos.flatMap(repo => repo.topics || []);
+    return [...new Set(allTopics)].sort();
+  }, [displayRepos]);
+
+  // Filter repos based on search and category
+  const filteredRepos = useMemo(() => {
+    return displayRepos.filter(repo => {
+      const matchesSearch = searchTerm === "" || 
+        repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        repo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        getProjectDescription(repo).toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = selectedCategory === "all" || 
+        repo.topics?.includes(selectedCategory) ||
+        repo.language?.toLowerCase() === selectedCategory.toLowerCase();
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [displayRepos, searchTerm, selectedCategory]);
+
   const shouldShowRateLimitWarning = error?.message === 'RATE_LIMITED';
 
   return (
@@ -393,9 +419,21 @@ const ProjectsSection = () => {
             <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6"></div>
           </div>
 
+          {/* Project Filters */}
+          <div className="mb-12">
+            <ProjectFilters
+              categories={categories}
+              selectedCategory={selectedCategory}
+              searchTerm={searchTerm}
+              onCategoryChange={setSelectedCategory}
+              onSearchChange={setSearchTerm}
+            />
+          </div>
+
           {/* Projects Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayRepos.map((repo, index) => (
+          {filteredRepos.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredRepos.map((repo, index) => (
               <Card 
                 key={repo.id} 
                 className="group bg-background border-border card-hover overflow-hidden"
@@ -499,6 +537,23 @@ const ProjectsSection = () => {
               </Card>
             ))}
           </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-lg text-muted-foreground">
+                No projects found matching your criteria.
+              </p>
+              <Button 
+                variant="outline" 
+                className="mt-4"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setSearchTerm("");
+                }}
+              >
+                Clear Filters
+              </Button>
+            </div>
+          )}
 
           {/* View More */}
           <div className="text-center mt-12">
