@@ -130,11 +130,10 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
         const readmeData = await readmeResponse.json();
         const readmeContent = atob(readmeData.content);
         
-        // Look for valid image URLs in README with improved patterns
+        // Look for relevant project images, excluding generic tutorial/template images
         const imagePatterns = [
-          /!\[.*?\]\((https?:\/\/[^\s)]+\.(?:png|jpg|jpeg|gif|webp|svg))\)/gi,
-          /<img[^>]+src=["'](https?:\/\/[^"']+\.(?:png|jpg|jpeg|gif|webp|svg))["'][^>]*>/gi,
-          /https?:\/\/assets\.ccbp\.in\/[^\s]+\.(?:png|jpg|jpeg|gif|webp|svg)/gi
+          /!\[.*?\]\((https?:\/\/[^\s)]+\.(?:png|jpg|jpeg|gif|webp))\)/gi,
+          /<img[^>]+src=["'](https?:\/\/[^"']+\.(?:png|jpg|jpeg|gif|webp))["'][^>]*>/gi
         ];
 
         for (const pattern of imagePatterns) {
@@ -142,12 +141,25 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
           for (const match of matches) {
             const imageUrl = match[1] || match[0];
             
-            // Validate that it's a proper HTTP URL
-            if (imageUrl && imageUrl.startsWith('http')) {
+            // Filter out irrelevant/generic images
+            const isRelevantImage = imageUrl && 
+              imageUrl.startsWith('http') &&
+              !imageUrl.includes('assets.ccbp.in') && // Exclude tutorial platform images
+              !imageUrl.includes('github.com/user-attachments') && // Exclude generic GitHub attachments
+              !imageUrl.toLowerCase().includes('logo') &&
+              !imageUrl.toLowerCase().includes('icon') &&
+              !imageUrl.toLowerCase().includes('badge') &&
+              (imageUrl.toLowerCase().includes('output') || 
+               imageUrl.toLowerCase().includes('demo') || 
+               imageUrl.toLowerCase().includes('screenshot') ||
+               imageUrl.toLowerCase().includes('preview') ||
+               imageUrl.includes(repoName.toLowerCase()));
+            
+            if (isRelevantImage) {
               try {
                 const testResponse = await fetch(imageUrl, { method: 'HEAD' });
                 if (testResponse.ok) {
-                  console.log(`Found README image for ${repoName}: ${imageUrl}`);
+                  console.log(`Found relevant README image for ${repoName}: ${imageUrl}`);
                   return imageUrl;
                 }
               } catch {
