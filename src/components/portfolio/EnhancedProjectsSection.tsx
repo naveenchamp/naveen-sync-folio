@@ -224,6 +224,39 @@ const fetchRepoReadme = async (repoName: string): Promise<string> => {
   }
 };
 
+// Helper functions moved outside component to prevent re-creation on each render
+const getProjectTitle = (name: string) => {
+  return name
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
+const getTechStack = (repo: GitHubRepo) => {
+  if (repo.topics && repo.topics.length > 0) {
+    return repo.topics.slice(0, 4);
+  }
+  if (repo.language) {
+    return [repo.language];
+  }
+  return ['General Project'];
+};
+
+const getProjectDescription = (repo: RepoWithImage) => {
+  const description = repo.readmeDescription || repo.description;
+  if (!description || description.length < 20) {
+    // Generate meaningful descriptions based on repo name and topics
+    const projectType = repo.topics?.includes('react') ? 'React application' : 
+                       repo.topics?.includes('javascript') ? 'JavaScript project' :
+                       repo.topics?.includes('typescript') ? 'TypeScript application' :
+                       'Web application';
+    
+    const features = repo.topics?.slice(0, 2).join(' and ') || 'modern web technologies';
+    return `A ${projectType} built with ${features}, showcasing innovative development practices and clean code architecture.`;
+  }
+  return description;
+};
+
 const ProjectsSection = () => {
   const [reposWithImages, setReposWithImages] = useState<RepoWithImage[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -303,37 +336,6 @@ const ProjectsSection = () => {
     loadImages();
   }, [repos, imagesLoaded, error]);
 
-  const getProjectTitle = (name: string) => {
-    return name
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-  };
-
-  const getTechStack = (repo: GitHubRepo) => {
-    if (repo.topics && repo.topics.length > 0) {
-      return repo.topics.slice(0, 4);
-    }
-    if (repo.language) {
-      return [repo.language];
-    }
-    return ['General Project'];
-  };
-
-  const getProjectDescription = (repo: RepoWithImage) => {
-    const description = repo.readmeDescription || repo.description;
-    if (!description || description.length < 20) {
-      // Generate meaningful descriptions based on repo name and topics
-      const projectType = repo.topics?.includes('react') ? 'React application' : 
-                         repo.topics?.includes('javascript') ? 'JavaScript project' :
-                         repo.topics?.includes('typescript') ? 'TypeScript application' :
-                         'Web application';
-      
-      const features = repo.topics?.slice(0, 2).join(' and ') || 'modern web technologies';
-      return `A ${projectType} built with ${features}, showcasing innovative development practices and clean code architecture.`;
-    }
-    return description;
-  };
 
   if (isLoading) {
     return (
