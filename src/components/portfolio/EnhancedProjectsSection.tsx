@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Github, ExternalLink, Loader2, AlertCircle, Star, Calendar } from "lucide-react";
+import { Github, ExternalLink, Loader2, AlertCircle, Star, Calendar, Search } from "lucide-react";
 import { useEffect } from "react";
 import projectPlaceholder from "@/assets/project-placeholder.jpg";
 import ProjectFilters from "./ProjectFilters";
@@ -132,7 +132,7 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
         const readmeData = await readmeResponse.json();
         const readmeContent = atob(readmeData.content);
         
-        // Look for relevant project images, excluding generic tutorial/template images
+        // Look for relevant project images, including tutorial/demo images
         const imagePatterns = [
           /!\[.*?\]\((https?:\/\/[^\s)]+\.(?:png|jpg|jpeg|gif|webp))\)/gi,
           /<img[^>]+src=["'](https?:\/\/[^"']+\.(?:png|jpg|jpeg|gif|webp))["'][^>]*>/gi
@@ -143,25 +143,27 @@ const fetchRepoImage = async (repoName: string): Promise<string> => {
           for (const match of matches) {
             const imageUrl = match[1] || match[0];
             
-            // Filter out irrelevant/generic images
-            const isRelevantImage = imageUrl && 
+            // Prioritize project-specific images
+            const isProjectImage = imageUrl && 
               imageUrl.startsWith('http') &&
-              !imageUrl.includes('assets.ccbp.in') && // Exclude tutorial platform images
-              !imageUrl.includes('github.com/user-attachments') && // Exclude generic GitHub attachments
-              !imageUrl.toLowerCase().includes('logo') &&
-              !imageUrl.toLowerCase().includes('icon') &&
-              !imageUrl.toLowerCase().includes('badge') &&
               (imageUrl.toLowerCase().includes('output') || 
                imageUrl.toLowerCase().includes('demo') || 
                imageUrl.toLowerCase().includes('screenshot') ||
                imageUrl.toLowerCase().includes('preview') ||
+               imageUrl.includes('assets.ccbp.in') || // Include tutorial platform images
                imageUrl.includes(repoName.toLowerCase()));
             
-            if (isRelevantImage) {
+            if (isProjectImage) {
               try {
+                // For assets.ccbp.in images, trust they exist without HEAD request
+                if (imageUrl.includes('assets.ccbp.in')) {
+                  console.log(`Found tutorial image for ${repoName}: ${imageUrl}`);
+                  return imageUrl;
+                }
+                
                 const testResponse = await fetch(imageUrl, { method: 'HEAD' });
                 if (testResponse.ok) {
-                  console.log(`Found relevant README image for ${repoName}: ${imageUrl}`);
+                  console.log(`Found project image for ${repoName}: ${imageUrl}`);
                   return imageUrl;
                 }
               } catch {
@@ -422,7 +424,16 @@ const ProjectsSection = () => {
           </div>
 
           {/* Project Filters */}
-          <div className="mb-12">
+          <div className="mb-12 bg-background/50 backdrop-blur-sm rounded-xl p-6 border border-border">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Search className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">Explore Projects</h3>
+                <p className="text-sm text-muted-foreground">Filter by technology or search by name</p>
+              </div>
+            </div>
             <ProjectFilters
               categories={categories}
               selectedCategory={selectedCategory}
