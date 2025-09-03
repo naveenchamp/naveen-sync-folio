@@ -277,6 +277,42 @@ const ProjectsSection = () => {
     },
   });
 
+  // Show fallback projects if rate limited or failed, otherwise show loaded repos
+  const displayRepos = useMemo<RepoWithImage[]>(() => {
+    console.log('displayRepos useMemo running', { errorMessage: error?.message, reposWithImagesLength: reposWithImages.length });
+    return (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
+      ? fallbackProjects 
+      : reposWithImages;
+  }, [error?.message, reposWithImages]);
+
+  // Get unique categories from repos
+  const categories = useMemo(() => {
+    console.log('categories useMemo running', { displayReposLength: displayRepos?.length });
+    if (!displayRepos || displayRepos.length === 0) return [];
+    const allTopics = displayRepos.flatMap(repo => repo.topics || []);
+    return [...new Set(allTopics)].sort();
+  }, [displayRepos]);
+
+  // Filter repos based on search and category
+  const filteredRepos = useMemo(() => {
+    console.log('filteredRepos useMemo running', { displayReposLength: displayRepos?.length, searchTerm, selectedCategory });
+    if (!displayRepos || displayRepos.length === 0) return [];
+    return displayRepos.filter(repo => {
+      const matchesSearch = searchTerm === "" || 
+        repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (repo.description && repo.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (repo.readmeDescription && repo.readmeDescription.toLowerCase().includes(searchTerm.toLowerCase()));
+      
+      const matchesCategory = selectedCategory === "all" || 
+        (repo.topics && repo.topics.includes(selectedCategory)) ||
+        (repo.language && repo.language.toLowerCase() === selectedCategory.toLowerCase());
+      
+      return matchesSearch && matchesCategory;
+    });
+  }, [displayRepos, searchTerm, selectedCategory]);
+
+  const shouldShowRateLimitWarning = error?.message === 'RATE_LIMITED';
+
   // Load images when repos are available or use fallback
   useEffect(() => {
     const loadImages = async () => {
@@ -373,41 +409,6 @@ const ProjectsSection = () => {
     );
   }
 
-  // Show fallback projects if rate limited or failed, otherwise show loaded repos
-  const displayRepos = useMemo<RepoWithImage[]>(() => {
-    console.log('displayRepos useMemo running', { errorMessage: error?.message, reposWithImagesLength: reposWithImages.length });
-    return (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
-      ? fallbackProjects 
-      : reposWithImages;
-  }, [error?.message, reposWithImages]);
-
-  // Get unique categories from repos
-  const categories = useMemo(() => {
-    console.log('categories useMemo running', { displayReposLength: displayRepos?.length });
-    if (!displayRepos || displayRepos.length === 0) return [];
-    const allTopics = displayRepos.flatMap(repo => repo.topics || []);
-    return [...new Set(allTopics)].sort();
-  }, [displayRepos]);
-
-  // Filter repos based on search and category
-  const filteredRepos = useMemo(() => {
-    console.log('filteredRepos useMemo running', { displayReposLength: displayRepos?.length, searchTerm, selectedCategory });
-    if (!displayRepos || displayRepos.length === 0) return [];
-    return displayRepos.filter(repo => {
-      const matchesSearch = searchTerm === "" || 
-        repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (repo.description && repo.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (repo.readmeDescription && repo.readmeDescription.toLowerCase().includes(searchTerm.toLowerCase()));
-      
-      const matchesCategory = selectedCategory === "all" || 
-        (repo.topics && repo.topics.includes(selectedCategory)) ||
-        (repo.language && repo.language.toLowerCase() === selectedCategory.toLowerCase());
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [displayRepos, searchTerm, selectedCategory]);
-
-  const shouldShowRateLimitWarning = error?.message === 'RATE_LIMITED';
 
   return (
     <section id="projects" className="py-20 bg-card">
