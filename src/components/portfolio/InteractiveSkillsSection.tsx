@@ -33,8 +33,6 @@ const InteractiveSkillsSection = () => {
       skills: [
         { name: "Git & GitHub" },
         { name: "VS Code" },
-        { name: "Chrome DevTools" },
-        { name: "NPM/Yarn" },
         { name: "Figma" }
       ]
     }
