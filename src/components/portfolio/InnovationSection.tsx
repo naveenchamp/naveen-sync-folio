@@ -1,29 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Brain, Puzzle, Lightbulb, Rocket } from "lucide-react";
 
 const InnovationSection = () => {
-  const principles = [
-    {
-      icon: Brain,
-      title: "Curiosity First",
-      description: "I approach problems with curiosity - every challenge is an opportunity to learn something new."
-    },
-    {
-      icon: Puzzle,
-      title: "Problem Solving",
-      description: "Every bug is a puzzle waiting to be solved, every feature is a chance to innovate."
-    },
-    {
-      icon: Lightbulb,
-      title: "User-Centric",
-      description: "Creating solutions that feel intuitive for users while being scalable for the future."
-    },
-    {
-      icon: Rocket,
-      title: "Future-Ready",
-      description: "Great code isn't just written — it's crafted with intention and long-term vision."
-    }
-  ];
 
   return (
     <section id="innovation" className="py-20 bg-card relative overflow-hidden">
@@ -64,28 +41,6 @@ const InnovationSection = () => {
             </Card>
           </div>
 
-          {/* Principles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {principles.map((principle, index) => (
-              <Card 
-                key={principle.title} 
-                className="p-6 bg-background border-border card-hover text-center group"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="space-y-4">
-                  <div className="mx-auto w-16 h-16 rounded-lg bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <principle.icon className="w-8 h-8 text-white" />
-                  </div>
-                  
-                  <h3 className="heading-sm text-foreground">{principle.title}</h3>
-                  
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {principle.description}
-                  </p>
-                </div>
-              </Card>
-            ))}
-          </div>
 
           {/* Call to Action */}
           <div className="text-center mt-16 fade-in">
