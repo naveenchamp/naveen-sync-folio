@@ -11,6 +11,7 @@ const InteractiveSkillsSection = () => {
       skills: [
         { name: "JavaScript (ES6+)" },
         { name: "React.js" },
+        { name: "JSX" },
         { name: "HTML5 & CSS3" },
         { name: "Responsive Design" }
       ]
@@ -23,7 +24,6 @@ const InteractiveSkillsSection = () => {
         { name: "Python" },
         { name: "Express.js" },
         { name: "RESTful APIs" },
-        { name: "Database Design" },
         { name: "SQL & NoSQL" }
       ]
     },
@@ -36,15 +36,6 @@ const InteractiveSkillsSection = () => {
         { name: "Chrome DevTools" },
         { name: "NPM/Yarn" },
         { name: "Figma" }
-      ]
-    },
-    {
-      category: "Specializations",
-      icon: "🚀",
-      skills: [
-        { name: "Weather Data APIs" },
-        { name: "Cricket Analytics" },
-        { name: "n8n Automation" }
       ]
     }
   ];
