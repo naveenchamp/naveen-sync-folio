@@ -374,9 +374,11 @@ const ProjectsSection = () => {
   }
 
   // Show fallback projects if rate limited or failed, otherwise show loaded repos
-  const displayRepos: RepoWithImage[] = (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
-    ? fallbackProjects 
-    : reposWithImages;
+  const displayRepos = useMemo<RepoWithImage[]>(() => {
+    return (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
+      ? fallbackProjects 
+      : reposWithImages;
+  }, [error?.message, reposWithImages]);
 
   // Get unique categories from repos
   const categories = useMemo(() => {
