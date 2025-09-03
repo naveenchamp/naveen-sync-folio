@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 
 const InteractiveSkillsSection = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
@@ -11,34 +9,33 @@ const InteractiveSkillsSection = () => {
       category: "Frontend Development",
       icon: "💻",
       skills: [
-        { name: "JavaScript (ES6+)", level: 95, experience: "4+ years" },
-        { name: "React.js", level: 90, experience: "3+ years" },
-        { name: "HTML5 & CSS3", level: 95, experience: "4+ years" },
-        { name: "Responsive Design", level: 90, experience: "4+ years" }
+        { name: "JavaScript (ES6+)" },
+        { name: "React.js" },
+        { name: "HTML5 & CSS3" },
+        { name: "Responsive Design" }
       ]
     },
     {
       category: "Backend Development",
       icon: "⚙️",
       skills: [
-        { name: "Node.js", level: 85, experience: "3+ years" },
-        { name: "Python", level: 90, experience: "4+ years" },
-        { name: "Express.js", level: 80, experience: "3+ years" },
-        { name: "RESTful APIs", level: 90, experience: "3+ years" },
-        { name: "Database Design", level: 85, experience: "3+ years" },
-        { name: "SQL & NoSQL", level: 80, experience: "3+ years" }
+        { name: "Node.js" },
+        { name: "Python" },
+        { name: "Express.js" },
+        { name: "RESTful APIs" },
+        { name: "Database Design" },
+        { name: "SQL & NoSQL" }
       ]
     },
     {
       category: "Development Tools",
       icon: "🛠️",
       skills: [
-        { name: "Git & GitHub", level: 95, experience: "4+ years" },
-        { name: "VS Code", level: 95, experience: "4+ years" },
-        { name: "Chrome DevTools", level: 85, experience: "3+ years" },
-        { name: "NPM/Yarn", level: 80, experience: "3+ years" },
-        { name: "Figma", level: 70, experience: "2+ years" },
-        
+        { name: "Git & GitHub" },
+        { name: "VS Code" },
+        { name: "Chrome DevTools" },
+        { name: "NPM/Yarn" },
+        { name: "Figma" }
       ]
     },
     {
@@ -70,20 +67,6 @@ const InteractiveSkillsSection = () => {
 
     return () => observer.disconnect();
   }, []);
-
-  const getSkillColor = (level: number) => {
-    if (level >= 90) return "text-emerald-500";
-    if (level >= 80) return "text-blue-500";
-    if (level >= 70) return "text-yellow-500";
-    return "text-orange-500";
-  };
-
-  const getProgressColor = (level: number) => {
-    if (level >= 90) return "bg-emerald-500";
-    if (level >= 80) return "bg-blue-500";
-    if (level >= 70) return "bg-yellow-500";
-    return "bg-orange-500";
-  };
 
   return (
     <section id="skills" className="py-20 bg-background">
@@ -126,14 +109,14 @@ const InteractiveSkillsSection = () => {
                     {category.skills.map((skill, skillIndex) => (
                       <div 
                         key={skill.name}
-                        className="space-y-2 p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors"
+                        className="p-3 rounded-lg bg-muted/20 hover:bg-muted/30 transition-colors"
                         style={{ 
                           animationDelay: `${(categoryIndex * 150) + (skillIndex * 50)}ms` 
                         }}
                       >
-                         <div className="flex items-center justify-center">
-                           <span className="font-medium text-foreground">{skill.name}</span>
-                         </div>
+                        <div className="flex items-center justify-center">
+                          <span className="font-medium text-foreground">{skill.name}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -141,7 +124,6 @@ const InteractiveSkillsSection = () => {
               </Card>
             ))}
           </div>
-
         </div>
       </div>
     </section>
