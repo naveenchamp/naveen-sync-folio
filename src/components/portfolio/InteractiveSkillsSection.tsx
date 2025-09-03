@@ -14,8 +14,6 @@ const InteractiveSkillsSection = () => {
         { name: "JavaScript (ES6+)", level: 95, experience: "4+ years" },
         { name: "React.js", level: 90, experience: "3+ years" },
         { name: "HTML5 & CSS3", level: 95, experience: "4+ years" },
-        { name: "TypeScript", level: 75, experience: "2+ years" },
-        { name: "Tailwind CSS", level: 85, experience: "2+ years" },
         { name: "Responsive Design", level: 90, experience: "4+ years" }
       ]
     },
@@ -40,19 +38,16 @@ const InteractiveSkillsSection = () => {
         { name: "Chrome DevTools", level: 85, experience: "3+ years" },
         { name: "NPM/Yarn", level: 80, experience: "3+ years" },
         { name: "Figma", level: 70, experience: "2+ years" },
-        { name: "Docker", level: 60, experience: "1+ year" }
+        
       ]
     },
     {
       category: "Specializations",
       icon: "🚀",
       skills: [
-        { name: "Machine Learning", level: 65, experience: "1+ year" },
-        { name: "Weather Data APIs", level: 90, experience: "2+ years" },
-        { name: "Cricket Analytics", level: 85, experience: "2+ years" },
-        { name: "Data Visualization", level: 75, experience: "2+ years" },
-        { name: "n8n Automation", level: 70, experience: "1+ year" },
-        { name: "CI/CD Pipelines", level: 60, experience: "1+ year" }
+        { name: "Weather Data APIs" },
+        { name: "Cricket Analytics" },
+        { name: "n8n Automation" }
       ]
     }
   ];
@@ -136,34 +131,9 @@ const InteractiveSkillsSection = () => {
                           animationDelay: `${(categoryIndex * 150) + (skillIndex * 50)}ms` 
                         }}
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-foreground">{skill.name}</span>
-                          <div className="flex items-center gap-2">
-                            <Badge 
-                              variant="outline" 
-                              className={`text-xs ${getSkillColor(skill.level)} border-current`}
-                            >
-                              {skill.experience}
-                            </Badge>
-                            <span className={`text-sm font-semibold ${getSkillColor(skill.level)}`}>
-                              {skill.level}%
-                            </span>
-                          </div>
-                        </div>
-                        
-                        <div className="relative">
-                          <Progress 
-                            value={visibleCards.includes(categoryIndex) ? skill.level : 0}
-                            className="h-2 bg-muted"
-                          />
-                          <div 
-                            className={`absolute top-0 left-0 h-2 rounded-full transition-all duration-1000 ease-out ${getProgressColor(skill.level)}`}
-                            style={{ 
-                              width: visibleCards.includes(categoryIndex) ? `${skill.level}%` : '0%',
-                              transitionDelay: `${(categoryIndex * 100) + (skillIndex * 100)}ms`
-                            }}
-                          />
-                        </div>
+                         <div className="flex items-center justify-center">
+                           <span className="font-medium text-foreground">{skill.name}</span>
+                         </div>
                       </div>
                     ))}
                   </div>
@@ -172,29 +142,6 @@ const InteractiveSkillsSection = () => {
             ))}
           </div>
 
-          {/* Skills Summary */}
-          <div className="mt-16 text-center">
-            <Card className="p-8 bg-gradient-to-r from-primary/5 to-accent/5 border-border">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">4+</div>
-                  <div className="text-sm text-muted-foreground">Years Experience</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">20+</div>
-                  <div className="text-sm text-muted-foreground">Technologies</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">15+</div>
-                  <div className="text-sm text-muted-foreground">Projects Completed</div>
-                </div>
-                <div className="space-y-2">
-                  <div className="text-3xl font-bold text-primary">100%</div>
-                  <div className="text-sm text-muted-foreground">Client Satisfaction</div>
-                </div>
-              </div>
-            </Card>
-          </div>
         </div>
       </div>
     </section>

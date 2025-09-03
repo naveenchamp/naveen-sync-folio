@@ -4,8 +4,6 @@ import HeroSection from "@/components/portfolio/HeroSection";
 import AboutSection from "@/components/portfolio/AboutSection";
 import EnhancedProjectsSection from "@/components/portfolio/EnhancedProjectsSection";
 import InteractiveSkillsSection from "@/components/portfolio/InteractiveSkillsSection";
-import TestimonialsSection from "@/components/portfolio/TestimonialsSection";
-import BlogSection from "@/components/portfolio/BlogSection";
 import InnovationSection from "@/components/portfolio/InnovationSection";
 import ResumeDisplay from "@/components/portfolio/ResumeDisplay";
 import EnhancedContactSection from "@/components/portfolio/EnhancedContactSection";
@@ -56,9 +54,7 @@ const Index = () => {
         <AboutSection />
         <EnhancedProjectsSection />
         <InteractiveSkillsSection />
-        <TestimonialsSection />
         <InnovationSection />
-        <BlogSection />
         <ResumeDisplay />
         <EnhancedContactSection />
       </main>
