@@ -375,6 +375,7 @@ const ProjectsSection = () => {
 
   // Show fallback projects if rate limited or failed, otherwise show loaded repos
   const displayRepos = useMemo<RepoWithImage[]>(() => {
+    console.log('displayRepos useMemo running', { errorMessage: error?.message, reposWithImagesLength: reposWithImages.length });
     return (error?.message === 'RATE_LIMITED' || reposWithImages.length === 0) 
       ? fallbackProjects 
       : reposWithImages;
@@ -382,6 +383,7 @@ const ProjectsSection = () => {
 
   // Get unique categories from repos
   const categories = useMemo(() => {
+    console.log('categories useMemo running', { displayReposLength: displayRepos?.length });
     if (!displayRepos || displayRepos.length === 0) return [];
     const allTopics = displayRepos.flatMap(repo => repo.topics || []);
     return [...new Set(allTopics)].sort();
@@ -389,6 +391,7 @@ const ProjectsSection = () => {
 
   // Filter repos based on search and category
   const filteredRepos = useMemo(() => {
+    console.log('filteredRepos useMemo running', { displayReposLength: displayRepos?.length, searchTerm, selectedCategory });
     if (!displayRepos || displayRepos.length === 0) return [];
     return displayRepos.filter(repo => {
       const matchesSearch = searchTerm === "" || 
