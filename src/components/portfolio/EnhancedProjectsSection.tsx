@@ -393,12 +393,12 @@ const ProjectsSection = () => {
     return displayRepos.filter(repo => {
       const matchesSearch = searchTerm === "" || 
         repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        repo.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        getProjectDescription(repo).toLowerCase().includes(searchTerm.toLowerCase());
+        (repo.description && repo.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (repo.readmeDescription && repo.readmeDescription.toLowerCase().includes(searchTerm.toLowerCase()));
       
       const matchesCategory = selectedCategory === "all" || 
-        repo.topics?.includes(selectedCategory) ||
-        repo.language?.toLowerCase() === selectedCategory.toLowerCase();
+        (repo.topics && repo.topics.includes(selectedCategory)) ||
+        (repo.language && repo.language.toLowerCase() === selectedCategory.toLowerCase());
       
       return matchesSearch && matchesCategory;
     });
