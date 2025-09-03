@@ -380,12 +380,14 @@ const ProjectsSection = () => {
 
   // Get unique categories from repos
   const categories = useMemo(() => {
+    if (!displayRepos || displayRepos.length === 0) return [];
     const allTopics = displayRepos.flatMap(repo => repo.topics || []);
     return [...new Set(allTopics)].sort();
   }, [displayRepos]);
 
   // Filter repos based on search and category
   const filteredRepos = useMemo(() => {
+    if (!displayRepos || displayRepos.length === 0) return [];
     return displayRepos.filter(repo => {
       const matchesSearch = searchTerm === "" || 
         repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
