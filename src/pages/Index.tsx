@@ -11,34 +11,14 @@ import Footer from "@/components/portfolio/Footer";
 import LoadingScreen from "@/components/portfolio/LoadingScreen";
 import ScrollAnimations from "@/components/portfolio/ScrollAnimations";
 
+const LOADING_DURATION_MS = 2000;
+
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Preload critical resources
-    const preloadImages = [
-      '/naveen-resume.pdf',
-      // Add other critical assets
-    ];
-
-    Promise.all(
-      preloadImages.map(src => {
-        return new Promise((resolve) => {
-          if (src.endsWith('.pdf')) {
-            // For PDFs, just resolve immediately
-            resolve(src);
-          } else {
-            const img = new Image();
-            img.onload = () => resolve(src);
-            img.onerror = () => resolve(src);
-            img.src = src;
-          }
-        });
-      })
-    ).then(() => {
-      // Minimum loading time for better UX
-      setTimeout(() => setIsLoading(false), 2000);
-    });
+    const timer = setTimeout(() => setIsLoading(false), LOADING_DURATION_MS);
+    return () => clearTimeout(timer);
   }, []);
 
   if (isLoading) {
