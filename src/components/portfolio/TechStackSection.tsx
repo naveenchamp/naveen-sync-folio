@@ -6,43 +6,19 @@ const TechStackSection = () => {
     {
       category: "Frontend Development",
       skills: [
-        { name: "JavaScript (ES6+)", level: "Expert", color: "bg-yellow-500" },
-        { name: "React.js", level: "Expert", color: "bg-blue-500" },
-        { name: "HTML5 & CSS3", level: "Expert", color: "bg-orange-500" },
-        { name: "Responsive Design", level: "Expert", color: "bg-green-500" }
+        { name: "HTML", level: "Expert", color: "bg-orange-500" },
+        { name: "CSS", level: "Expert", color: "bg-blue-500" },
+        { name: "JavaScript", level: "Expert", color: "bg-yellow-500" },
+        { name: "React JS", level: "Advanced", color: "bg-blue-400" },
+        { name: "TypeScript", level: "Advanced", color: "bg-blue-600" }
       ]
     },
     {
       category: "Backend Development",
       skills: [
-        { name: "Node.js", level: "Advanced", color: "bg-green-600" },
         { name: "Python", level: "Expert", color: "bg-blue-700" },
-        { name: "RESTful APIs", level: "Expert", color: "bg-purple-500" },
-        { name: "Database Design", level: "Advanced", color: "bg-indigo-500" },
-        { name: "Express.js", level: "Advanced", color: "bg-gray-600" },
-        { name: "SQL & NoSQL", level: "Advanced", color: "bg-orange-600" }
-      ]
-    },
-    {
-      category: "Development Tools",
-      skills: [
-        { name: "Git & GitHub", level: "Expert", color: "bg-red-500" },
-        { name: "VS Code", level: "Expert", color: "bg-blue-600" },
-        { name: "Chrome DevTools", level: "Advanced", color: "bg-green-600" },
-        { name: "NPM/Yarn", level: "Learning", color: "bg-red-600" },
-        { name: "Figma", level: "Intermediate", color: "bg-pink-500" }
-      ]
-    },
-    {
-      category: "Specializations & Learning",
-      skills: [
-        { name: "Machine Learning", level: "Learning", color: "bg-emerald-500" },
-        { name: "Weather Data APIs", level: "Expert", color: "bg-sky-500" },
-        { name: "Cricket Analytics", level: "Expert", color: "bg-green-700" },
-        { name: "n8n", level: "Learning", color: "bg-purple-400" },
-        { name: "Tailwind CSS Basic", level: "Learning", color: "bg-cyan-400" },
-        { name: "TypeScript Basic", level: "Learning", color: "bg-blue-600" },
-        { name: "React Learning", level: "Learning", color: "bg-blue-500" }
+        { name: "Node JS", level: "Advanced", color: "bg-green-600" },
+        { name: "SQL / MySQL / SQLite", level: "Advanced", color: "bg-orange-600" }
       ]
     }
   ];
