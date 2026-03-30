@@ -1,73 +1,82 @@
-# Welcome to your Lovable project
+# Naveen Sync Folio
 
-## Project info
+Personal portfolio site for Naveen Reddy Tippasani. The app showcases experience, skills, resume content, and project highlights sourced from GitHub.
 
-**URL**: https://lovable.dev/projects/aeabeeec-f5ea-475c-8065-01ece38f0017
+## Stack
 
-## How can I edit this code?
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- TanStack Query
+- Firebase Hosting
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/aeabeeec-f5ea-475c-8065-01ece38f0017) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Scripts
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+npm run dev
+npm run build
+npm run preview
+npm run lint
+npm run deploy:firebase
+npm run preview:firebase
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Local Development
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```sh
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The Vite dev server runs on `http://localhost:8080`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Production Preview
 
-**Use GitHub Codespaces**
+```sh
+npm run build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Firebase Deployment
 
-## What technologies are used for this project?
+This project is configured for Firebase Hosting with SPA rewrites in `firebase.json`.
 
-This project is built with:
+First-time setup:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```sh
+npx firebase-tools login
+npx firebase-tools use --add
+```
 
-## How can I deploy this project?
+When Firebase asks for an alias, use something like:
 
-Simply open [Lovable](https://lovable.dev/projects/aeabeeec-f5ea-475c-8065-01ece38f0017) and click on Share -> Publish.
+```sh
+production
+```
 
-## Can I connect a custom domain to my Lovable project?
+Deploy to production:
 
-Yes, you can!
+```sh
+npm run deploy:firebase
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Deploy to a preview channel:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+```sh
+npm run preview:firebase
+```
+
+## Project Structure
+
+- `src/components/portfolio`: page sections and portfolio-specific UI
+- `src/config/portfolio.ts`: personal info, links, and content configuration
+- `src/hooks/useGitHubRepos.ts`: GitHub repository fetching and project shaping
+- `public/`: static assets including the resume PDF
+
+## Notes
+
+- The projects section fetches public repositories from GitHub.
+- If GitHub rate limits are hit, the UI falls back to sample project data.
+- Firebase Hosting builds from `dist` and rewrites all routes to `index.html` for SPA navigation.

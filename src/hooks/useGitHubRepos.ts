@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PERSONAL_INFO } from "@/config/portfolio";
 import projectPlaceholder from "@/assets/project-placeholder.jpg";
@@ -10,17 +10,20 @@ import projectPlaceholder from "@/assets/project-placeholder.jpg";
 export interface GitHubRepo {
   id: number;
   name: string;
-  description: string;
+  description: string | null;
   html_url: string;
-  homepage: string;
+  homepage: string | null;
   topics: string[];
-  language: string;
+  language: string | null;
   stargazers_count: number;
   updated_at: string;
   fork: boolean;
 }
 
-export interface RepoWithImage extends GitHubRepo {
+export interface RepoWithImage extends Omit<GitHubRepo, "description" | "homepage" | "language"> {
+  description: string;
+  homepage: string;
+  language: string;
   image: string;
   readmeDescription?: string;
 }
@@ -79,7 +82,12 @@ const { githubUsername } = PERSONAL_INFO;
 
 const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
   const response = await fetch(
-    `https://api.github.com/users/${githubUsername}/repos?per_page=20&sort=updated`
+    `https://api.github.com/users/${githubUsername}/repos?per_page=20&sort=updated`,
+    {
+      headers: {
+        Accept: "application/vnd.github+json",
+      },
+    }
   );
 
   if (response.status === 403) throw new Error("RATE_LIMITED");
@@ -88,24 +96,18 @@ const fetchGitHubRepos = async (): Promise<GitHubRepo[]> => {
   return response.json();
 };
 
-const fetchRepoImage = async (repoName: string): Promise<string> => {
-  const branches = ["main", "master"];
-  const paths = ["preview.png", "demo.png", "screenshot.png"];
+const getRepoImageUrl = (repoName: string) =>
+  `https://opengraph.githubassets.com/1/${githubUsername}/${repoName}`;
 
-  for (const branch of branches) {
-    for (const path of paths) {
-      try {
-        const url = `https://raw.githubusercontent.com/${githubUsername}/${repoName}/${branch}/${path}`;
-        const res = await fetch(url, { method: "HEAD" });
-        if (res.ok) return url;
-      } catch {
-        continue;
-      }
-    }
-  }
-
-  return projectPlaceholder;
-};
+const mapRepoWithImage = (repo: GitHubRepo): RepoWithImage => ({
+  ...repo,
+  description: repo.description ?? "",
+  homepage: repo.homepage ?? "",
+  language: repo.language ?? "",
+  topics: repo.topics ?? [],
+  image: getRepoImageUrl(repo.name),
+  readmeDescription: repo.description ?? "",
+});
 
 // ============================================================
 // Utility Helpers (exported for use in components)
@@ -140,64 +142,35 @@ export const getProjectDescription = (repo: RepoWithImage) => {
 // ============================================================
 
 export function useGitHubRepos() {
-  const [reposWithImages, setReposWithImages] = useState<RepoWithImage[]>([]);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-
-  const { data: repos, isLoading, error } = useQuery({
-    queryKey: ["github-repos"],
+  const { data: repos = [], isLoading, error } = useQuery({
+    queryKey: ["github-repos", githubUsername],
     queryFn: fetchGitHubRepos,
     staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
     retry: (count, err) => (err?.message === "RATE_LIMITED" ? false : count < 2),
   });
 
   const isRateLimited = error?.message === "RATE_LIMITED";
+  const isUsingFallbackData = Boolean(error);
 
   const displayRepos = useMemo<RepoWithImage[]>(
-    () => (isRateLimited || reposWithImages.length === 0 ? fallbackProjects : reposWithImages),
-    [isRateLimited, reposWithImages]
+    () =>
+      isUsingFallbackData
+        ? fallbackProjects
+        : repos
+            .filter((repo) => !repo.name.includes(".") && repo.name !== githubUsername && !repo.fork)
+            .map(mapRepoWithImage),
+    [isUsingFallbackData, repos]
   );
 
   const categories = useMemo(() => {
-    const all = displayRepos.flatMap((r) => r.topics || []);
+    const all = displayRepos.flatMap((repo) => [
+      ...repo.topics.map((topic) => topic.toLowerCase()),
+      ...(repo.language ? [repo.language.toLowerCase()] : []),
+    ]);
+
     return [...new Set(all)].sort();
   }, [displayRepos]);
 
-  // Load images in batches
-  useEffect(() => {
-    if (imagesLoaded) return;
-
-    if (isRateLimited || (error && !repos)) {
-      setReposWithImages(fallbackProjects);
-      setImagesLoaded(true);
-      return;
-    }
-
-    if (!repos) return;
-
-    const filtered = repos.filter(
-      (r) => !r.name.includes(".") && r.name !== githubUsername && !r.fork
-    );
-
-    (async () => {
-      const BATCH = 3;
-      const results: RepoWithImage[] = [];
-
-      for (let i = 0; i < filtered.length; i += BATCH) {
-        const batch = filtered.slice(i, i + BATCH);
-        const loaded = await Promise.all(
-          batch.map(async (repo) => {
-            const image = await fetchRepoImage(repo.name);
-            return { ...repo, image, readmeDescription: repo.description || "" } as RepoWithImage;
-          })
-        );
-        results.push(...loaded);
-        if (i + BATCH < filtered.length) await new Promise((r) => setTimeout(r, 800));
-      }
-
-      setReposWithImages(results);
-      setImagesLoaded(true);
-    })();
-  }, [repos, imagesLoaded, error, isRateLimited]);
-
-  return { displayRepos, categories, isLoading, error, isRateLimited };
+  return { displayRepos, categories, isLoading, error, isRateLimited, isUsingFallbackData };
 }

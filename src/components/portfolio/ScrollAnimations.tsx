@@ -4,36 +4,31 @@ const ScrollAnimations = () => {
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+      rootMargin: "0px 0px -50px 0px",
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-fade-in');
-          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          entry.target.classList.add("animate-fade-in");
+          entry.target.classList.remove("opacity-0", "translate-y-8");
+          observer.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    // Observe all elements with fade-in class
-    const fadeElements = document.querySelectorAll('.fade-in');
-    fadeElements.forEach((el) => {
-      el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
-      observer.observe(el);
-    });
+    const animatedElements = document.querySelectorAll(".fade-in, .card-hover");
 
-    // Observe all elements with card-hover class for staggered animation
-    const cardElements = document.querySelectorAll('.card-hover');
-    cardElements.forEach((el, index) => {
-      el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
-      setTimeout(() => {
-        if (el.getBoundingClientRect().top < window.innerHeight) {
-          el.classList.add('animate-fade-in');
-          el.classList.remove('opacity-0', 'translate-y-8');
-        }
-      }, index * 100);
-      observer.observe(el);
+    animatedElements.forEach((element) => {
+      element.classList.add("opacity-0", "translate-y-8", "transition-all", "duration-700");
+
+      if (element.getBoundingClientRect().top < window.innerHeight * 0.9) {
+        element.classList.add("animate-fade-in");
+        element.classList.remove("opacity-0", "translate-y-8");
+        return;
+      }
+
+      observer.observe(element);
     });
 
     return () => observer.disconnect();

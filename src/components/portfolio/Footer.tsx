@@ -1,6 +1,6 @@
-import { Github, Linkedin, Mail, Heart } from "lucide-react";
-import { PERSONAL_INFO, SOCIAL_LINKS } from "@/config/portfolio";
 import type { LucideIcon } from "lucide-react";
+import { Github, Heart, Linkedin, Mail } from "lucide-react";
+import { PERSONAL_INFO, SOCIAL_LINKS } from "@/config/portfolio";
 
 const iconMap: Record<string, LucideIcon> = { Github, Linkedin, Mail };
 
@@ -19,8 +19,16 @@ const Footer = () => {
           <div className="flex justify-center space-x-6">
             {SOCIAL_LINKS.map((link) => {
               const Icon = iconMap[link.iconName];
+
               return (
-                <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors group" aria-label={link.label}>
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors group"
+                  aria-label={link.label}
+                >
                   <Icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </a>
               );
@@ -31,14 +39,16 @@ const Footer = () => {
             <p className="text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-1">
               Made with <Heart className="w-4 h-4 text-red-500" fill="currentColor" /> by Naveen
             </p>
-            <p className="text-muted-foreground text-xs mt-1">© {currentYear} All rights reserved.</p>
+            <p className="text-muted-foreground text-xs mt-1">
+              Copyright {currentYear}. All rights reserved.
+            </p>
           </div>
         </div>
 
         <div className="mt-8 pt-8 border-t border-border text-center">
           <p className="text-muted-foreground text-sm">
-            This portfolio automatically syncs with my GitHub repositories.
-            <span className="gradient-text font-semibold"> Always up to date!</span>
+            Project highlights stay current by pulling from my GitHub repositories.
+            <span className="gradient-text font-semibold"> Built to reflect active work.</span>
           </p>
         </div>
       </div>

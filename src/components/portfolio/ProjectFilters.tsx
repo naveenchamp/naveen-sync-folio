@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Filter, Grid, Search, Sparkles, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, X, Grid, List, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 interface ProjectFiltersProps {
   categories: string[];
@@ -11,6 +11,16 @@ interface ProjectFiltersProps {
   onCategoryChange: (category: string) => void;
   onSearchChange: (term: string) => void;
 }
+
+const featuredCategories = [
+  "react",
+  "javascript",
+  "typescript",
+  "nodejs",
+  "python",
+  "css",
+  "html",
+];
 
 const ProjectFilters = ({
   categories,
@@ -27,35 +37,33 @@ const ProjectFilters = ({
   };
 
   const hasActiveFilters = searchTerm !== "" || selectedCategory !== "all";
-
-  // Popular/Featured categories to show first
-  const featuredCategories = ["react", "javascript", "typescript", "nodejs", "python", "css", "html"];
   const sortedCategories = [
-    ...featuredCategories.filter(cat => categories.includes(cat)),
-    ...categories.filter(cat => !featuredCategories.includes(cat)).sort()
+    ...featuredCategories.filter((category) => categories.includes(category)),
+    ...categories.filter((category) => !featuredCategories.includes(category)).sort(),
   ];
 
   const getFilterCount = () => {
     let count = 0;
+
     if (searchTerm) count++;
     if (selectedCategory !== "all") count++;
+
     return count;
   };
 
   return (
     <div className="space-y-6">
-      {/* Search and Filter Header */}
       <div className="flex flex-col sm:flex-row gap-4 items-center">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
             placeholder="Search projects by name, description, or tech stack..."
             value={searchTerm}
-            onChange={(e) => onSearchChange(e.target.value)}
+            onChange={(event) => onSearchChange(event.target.value)}
             className="pl-10 bg-background border-border focus:ring-2 focus:ring-primary/20"
           />
         </div>
-        
+
         <div className="flex gap-2 items-center">
           <Button
             variant="outline"
@@ -71,7 +79,7 @@ const ProjectFilters = ({
               </Badge>
             )}
           </Button>
-          
+
           {hasActiveFilters && (
             <Button
               variant="ghost"
@@ -86,15 +94,13 @@ const ProjectFilters = ({
         </div>
       </div>
 
-      {/* Category Navigation */}
-      <div className={`space-y-4 transition-all duration-300 ${isFilterOpen ? 'block' : 'hidden sm:block'}`}>
-        {/* Featured Categories */}
+      <div className={`space-y-4 transition-all duration-300 ${isFilterOpen ? "block" : "hidden sm:block"}`}>
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Sparkles className="w-4 h-4" />
             <span>Featured Technologies</span>
           </div>
-          
+
           <div className="flex flex-wrap gap-2">
             <Button
               variant={selectedCategory === "all" ? "default" : "outline"}
@@ -107,31 +113,10 @@ const ProjectFilters = ({
                 {categories.length + 1}
               </Badge>
             </Button>
-            
-            {featuredCategories.filter(cat => categories.includes(cat)).map((category) => (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="sm"
-                onClick={() => onCategoryChange(category)}
-                className="rounded-full capitalize font-medium"
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
 
-        {/* All Categories */}
-        {categories.filter(cat => !featuredCategories.includes(cat)).length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Grid className="w-4 h-4" />
-              <span>Other Technologies</span>
-            </div>
-            
-            <div className="flex flex-wrap gap-2">
-              {categories.filter(cat => !featuredCategories.includes(cat)).sort().map((category) => (
+            {featuredCategories
+              .filter((category) => categories.includes(category))
+              .map((category) => (
                 <Button
                   key={category}
                   variant={selectedCategory === category ? "default" : "outline"}
@@ -142,11 +127,35 @@ const ProjectFilters = ({
                   {category}
                 </Button>
               ))}
+          </div>
+        </div>
+
+        {categories.filter((category) => !featuredCategories.includes(category)).length > 0 && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Grid className="w-4 h-4" />
+              <span>Other Technologies</span>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {categories
+                .filter((category) => !featuredCategories.includes(category))
+                .sort()
+                .map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onCategoryChange(category)}
+                    className="rounded-full capitalize font-medium"
+                  >
+                    {category}
+                  </Button>
+                ))}
             </div>
           </div>
         )}
 
-        {/* Active Filters Display */}
         {hasActiveFilters && (
           <div className="p-4 bg-muted/30 rounded-lg border border-border">
             <div className="flex flex-wrap gap-2 items-center">
@@ -155,8 +164,8 @@ const ProjectFilters = ({
                 <Badge variant="secondary" className="flex items-center gap-2">
                   <Search className="w-3 h-3" />
                   "{searchTerm}"
-                  <X 
-                    className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors" 
+                  <X
+                    className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors"
                     onClick={() => onSearchChange("")}
                   />
                 </Badge>
@@ -165,8 +174,8 @@ const ProjectFilters = ({
                 <Badge variant="secondary" className="flex items-center gap-2 capitalize">
                   <Filter className="w-3 h-3" />
                   {selectedCategory}
-                  <X 
-                    className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors" 
+                  <X
+                    className="w-3 h-3 cursor-pointer hover:text-destructive transition-colors"
                     onClick={() => onCategoryChange("all")}
                   />
                 </Badge>
@@ -176,23 +185,21 @@ const ProjectFilters = ({
         )}
       </div>
 
-      {/* Results Summary */}
       <div className="flex justify-between items-center text-sm text-muted-foreground border-t border-border pt-4">
         <span>
           {categories.length > 0 ? (
             <>
-              {sortedCategories.length} technologies • 
-              {hasActiveFilters ? " Filtered view" : " All projects"}
+              {sortedCategories.length} technologies |{hasActiveFilters ? " Filtered view" : " All projects"}
             </>
           ) : (
             "Loading project categories..."
           )}
         </span>
-        
+
         {categories.length > 0 && (
           <span className="flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
-            Live GitHub sync
+            GitHub-powered updates
           </span>
         )}
       </div>
