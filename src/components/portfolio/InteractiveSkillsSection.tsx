@@ -9,31 +9,20 @@ const InteractiveSkillsSection = () => {
       category: "Frontend Development",
       icon: "💻",
       skills: [
-        { name: "JavaScript (ES6+)" },
-        { name: "React.js" },
-        { name: "JSX" },
-        { name: "HTML5 & CSS3" },
-        { name: "Responsive Design" }
+        { name: "HTML" },
+        { name: "CSS" },
+        { name: "JavaScript" },
+        { name: "React JS" },
+        { name: "TypeScript" }
       ]
     },
     {
       category: "Backend Development",
       icon: "⚙️",
       skills: [
-        { name: "Node.js" },
         { name: "Python" },
-        { name: "Express.js" },
-        { name: "RESTful APIs" },
-        { name: "SQL & NoSQL" }
-      ]
-    },
-    {
-      category: "Development Tools",
-      icon: "🛠️",
-      skills: [
-        { name: "Git & GitHub" },
-        { name: "VS Code" },
-        { name: "Figma" }
+        { name: "Node JS" },
+        { name: "SQL / MySQL / SQLite" }
       ]
     }
   ];
