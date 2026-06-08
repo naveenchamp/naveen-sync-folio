@@ -46,15 +46,28 @@ const EnhancedContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-background">
+    <section id="contact" className="py-20 bg-background scroll-mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16 fade-in">
-            <h2 className="heading-lg mb-6">Ready to build the future together?</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Whether you have a project in mind, want to collaborate, or just want to chat about tech, I'd love to hear from you.
+            <h2 className="heading-lg mb-6 gradient-text">Let's Build Something Together</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+              Got an idea, a role, or a collaboration in mind? My inbox is open.
             </p>
-            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-6" />
+            <Button size="lg" className="bg-primary hover:bg-primary/90 glow-effect" asChild>
+              <a href={`mailto:${PERSONAL_INFO.email}`} className="flex items-center gap-2">
+                <Mail className="w-5 h-5" /> Send Me an Email
+              </a>
+            </Button>
+            <div className="flex justify-center gap-4 mt-6">
+              <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="p-3 rounded-full bg-muted/30 hover:bg-muted/60 text-muted-foreground hover:text-primary transition-colors">
+                <Github className="w-5 h-5" />
+              </a>
+              <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="p-3 rounded-full bg-muted/30 hover:bg-muted/60 text-muted-foreground hover:text-primary transition-colors">
+                <Linkedin className="w-5 h-5" />
+              </a>
+            </div>
+            <div className="w-20 h-1 bg-primary mx-auto rounded-full mt-8" />
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12">

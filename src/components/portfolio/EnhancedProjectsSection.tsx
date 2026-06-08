@@ -13,6 +13,7 @@ import { PERSONAL_INFO } from "@/config/portfolio";
 import projectPlaceholder from "@/assets/project-placeholder.jpg";
 import ProjectFilters from "./ProjectFilters";
 import ProjectLoadingState from "./ProjectLoadingState";
+import FeaturedProjects from "./FeaturedProjects";
 
 const EnhancedProjectsSection = () => {
   const { displayRepos, categories, isLoading, isRateLimited, isUsingFallbackData } =
@@ -40,9 +41,10 @@ const EnhancedProjectsSection = () => {
   if (isLoading) return <ProjectLoadingState />;
 
   return (
-    <section id="projects" className="py-20 bg-card">
+    <section id="projects" className="py-20 bg-card scroll-mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
+          <FeaturedProjects />
           <div className="text-center mb-16 fade-in">
             <h2 className="heading-lg mb-6">Featured Projects</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">

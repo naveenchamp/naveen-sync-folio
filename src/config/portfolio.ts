@@ -1,6 +1,5 @@
 // ============================================================
 // Centralized Portfolio Configuration
-// Update this file to change content across the entire site.
 // ============================================================
 
 export const PERSONAL_INFO = {
@@ -8,16 +7,19 @@ export const PERSONAL_INFO = {
   brandName: "Naveen.dev",
   title: "Full Stack Developer",
   tagline: "Building the future, one line of code at a time.",
-  heroText: "Hi, I'm Naveen 👋 Full Stack Developer building solutions that connect ideas with execution.",
-  heroSubtext: "Passionate about turning bold ideas into elegant digital experiences.",
+  heroHeadline: "Naveen Reddy Tippasani",
+  heroSubtext:
+    "Full Stack Developer — I build React frontends, Node.js APIs, and auto-sync my live work straight from GitHub.",
   location: "Kakinada, Andhra Pradesh, 533001",
   phone: "9390661948",
   email: "naveenreddytippasani777.7@gmail.com",
   github: "https://github.com/naveenchamp",
   githubUsername: "naveenchamp",
   linkedin: "https://www.linkedin.com/in/naveen-reddy-tippasani-5500402a5/",
+  youtube: "",
   resumePath: "/naveen-resume.pdf",
   resumeFilename: "Naveen_Reddy_Tippasani_Resume.pdf",
+  openToWork: true,
 } as const;
 
 export const NAV_ITEMS = [
@@ -27,36 +29,69 @@ export const NAV_ITEMS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-export interface Skill {
-  name: string;
-}
-
-export interface SkillCategory {
-  category: string;
-  icon: string;
-  skills: Skill[];
-}
+export interface Skill { name: string; }
+export interface SkillCategory { category: string; icon: string; skills: Skill[]; }
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    category: "Frontend Development",
-    icon: "💻",
+    category: "Frontend",
+    icon: "🎨",
     skills: [
+      { name: "React" },
+      { name: "JavaScript" },
+      { name: "Tailwind CSS" },
       { name: "HTML" },
       { name: "CSS" },
-      { name: "JavaScript" },
-      { name: "React JS" },
-      { name: "TypeScript" },
     ],
   },
   {
-    category: "Backend Development",
+    category: "Backend",
     icon: "⚙️",
     skills: [
+      { name: "Node.js" },
       { name: "Python" },
-      { name: "Node JS" },
-      { name: "SQL / MySQL / SQLite" },
+      { name: "REST APIs" },
     ],
+  },
+  {
+    category: "Tools & Other",
+    icon: "🛠️",
+    skills: [
+      { name: "Git" },
+      { name: "GitHub" },
+      { name: "Figma" },
+      { name: "VS Code" },
+    ],
+  },
+];
+
+export interface FeaturedProject {
+  title: string;
+  description: string;
+  tech: string[];
+  liveUrl?: string;
+  repoUrl: string;
+  image?: string;
+}
+
+export const FEATURED_PROJECTS: FeaturedProject[] = [
+  {
+    title: "Portfolio (this site)",
+    description: "Live portfolio that auto-syncs projects from GitHub with a polished React UI.",
+    tech: ["React", "TypeScript", "Tailwind"],
+    repoUrl: "https://github.com/naveenchamp",
+  },
+  {
+    title: "Weather Forecast App",
+    description: "Real-time weather tool with location-based forecasts and clean data viz.",
+    tech: ["React", "API", "JavaScript"],
+    repoUrl: "https://github.com/naveenchamp",
+  },
+  {
+    title: "Cricket Data System",
+    description: "Backend service that aggregates and serves live cricket stats via REST endpoints.",
+    tech: ["Node.js", "Python", "SQL"],
+    repoUrl: "https://github.com/naveenchamp",
   },
 ];
 
@@ -92,14 +127,6 @@ export const CONTACT_METHODS: ContactMethod[] = [
     value: "Follow on GitHub",
     href: PERSONAL_INFO.github,
     description: "See my code & contribute",
-    primary: false,
-  },
-  {
-    iconName: "MessageSquare",
-    label: "Direct Message",
-    value: "Quick message via form",
-    href: "#contact-form",
-    description: "Use the form on the left",
     primary: false,
   },
 ];

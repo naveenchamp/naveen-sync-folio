@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lightbulb, Globe, Sparkles, MessageSquare } from "lucide-react";
 import { PERSONAL_INFO, ABOUT_BADGES } from "@/config/portfolio";
+import profileImage from "@/assets/profile.jpg";
 
 const highlights = [
   { icon: Lightbulb, title: "What excites me", description: "Reimagining how technology solves everyday challenges" },
@@ -11,7 +12,7 @@ const highlights = [
 ];
 
 const AboutSection = () => (
-  <section id="about" className="py-20 bg-background">
+  <section id="about" className="py-20 bg-background scroll-mt-20">
     <div className="container mx-auto px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in">
@@ -21,6 +22,30 @@ const AboutSection = () => (
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6 slide-up">
+            {/* Profile photo with glow */}
+            <div className="flex flex-col items-center lg:items-start gap-4">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary to-accent blur-2xl opacity-60 animate-pulse" />
+                <img
+                  src={profileImage}
+                  alt={`${PERSONAL_INFO.name} portrait`}
+                  width={160}
+                  height={160}
+                  loading="lazy"
+                  className="relative w-40 h-40 rounded-full object-cover border-4 border-primary/40 shadow-[var(--shadow-glow)]"
+                />
+              </div>
+              {PERSONAL_INFO.openToWork && (
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/30 text-sm">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-success opacity-75 animate-ping" />
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success" />
+                  </span>
+                  <span className="text-success font-medium">Currently open to opportunities</span>
+                </div>
+              )}
+            </div>
+
             <div className="space-y-4">
               <p className="text-lg leading-relaxed text-foreground">
                 I'm <span className="text-[hsl(270_95%_75%)] font-semibold">{PERSONAL_INFO.name}</span>,
@@ -28,11 +53,11 @@ const AboutSection = () => (
               </p>
               <p className="text-lg leading-relaxed text-foreground/80">
                 From crafting pixel-perfect frontends to building scalable backends, I thrive at the
-                intersection of creativity and code.
+                intersection of creativity and code — building weather tools, cricket data systems,
+                AI-driven search apps, and educational platforms along the way.
               </p>
-              <p className="text-lg leading-relaxed text-foreground/80">
-                My journey spans building weather forecast tools, cricket data systems, AI-driven search
-                applications, and educational platforms.
+              <p className="text-lg leading-relaxed text-foreground/80 italic">
+                When I'm not coding, I'm brainstorming YouTube content ideas or exploring the latest AI tools.
               </p>
             </div>
 
@@ -50,7 +75,7 @@ const AboutSection = () => (
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {highlights.map((item, i) => (
-              <Card key={i} className="p-6 card-hover border-border bg-card group" style={{ animationDelay: `${i * 150}ms` }}>
+              <Card key={i} className="p-6 card-hover border-border bg-card group">
                 <div className="flex flex-col items-center text-center space-y-4">
                   <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
                     <item.icon className="w-6 h-6 text-primary" />
@@ -63,15 +88,6 @@ const AboutSection = () => (
               </Card>
             ))}
           </div>
-        </div>
-
-        <div className="text-center mt-16 fade-in">
-          <p className="text-xl text-muted-foreground">
-            ✨ <span className="text-primary font-semibold">Beyond code, I see user interactions as opportunities to inspire trust and delight.</span>
-          </p>
-          <p className="text-lg text-muted-foreground mt-4">
-            📩 Always open to collaborations — let's build the future together.
-          </p>
         </div>
       </div>
     </div>

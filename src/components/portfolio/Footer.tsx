@@ -36,20 +36,10 @@ const Footer = () => {
           </div>
 
           <div className="text-center md:text-right">
-            <p className="text-muted-foreground text-sm flex items-center justify-center md:justify-end gap-1">
-              Made with <Heart className="w-4 h-4 text-red-500" fill="currentColor" /> by Naveen
-            </p>
-            <p className="text-muted-foreground text-xs mt-1">
-              Copyright {currentYear}. All rights reserved.
+            <p className="text-muted-foreground text-sm">
+              © {currentYear} Naveen Reddy Tippasani · Made with ❤️ using React
             </p>
           </div>
-        </div>
-
-        <div className="mt-8 pt-8 border-t border-border text-center">
-          <p className="text-muted-foreground text-sm">
-            Project highlights stay current by pulling from my GitHub repositories.
-            <span className="gradient-text font-semibold"> Built to reflect active work.</span>
-          </p>
         </div>
       </div>
     </footer>
