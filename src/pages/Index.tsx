@@ -8,12 +8,14 @@ import ResumeDisplay from "@/components/portfolio/ResumeDisplay";
 import EnhancedContactSection from "@/components/portfolio/EnhancedContactSection";
 import Footer from "@/components/portfolio/Footer";
 import ScrollAnimations from "@/components/portfolio/ScrollAnimations";
+import SplineBackground from "@/components/portfolio/SplineBackground";
 
 const Index = () => (
-  <div className="min-h-screen bg-background">
+  <div className="relative min-h-screen bg-background/40">
+    <SplineBackground />
     <ScrollAnimations />
     <Navigation />
-    <main>
+    <main className="relative z-10">
       <HeroSection />
       <AboutSection />
       <EnhancedProjectsSection />
