@@ -6,72 +6,64 @@
 
 @layer base {
   :root {
-    /* Core Background & Text */
-    --background: 220 20% 6%;
-    --foreground: 220 10% 95%;
+    /* Core Background & Text - Dark green-accent theme */
+    --background: 0 0% 10%;
+    --foreground: 0 0% 96%;
 
     /* Card System */
-    --card: 220 20% 8%;
-    --card-foreground: 220 10% 95%;
-    --card-hover: 220 20% 10%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 96%;
+    --card-hover: 0 0% 15%;
 
-    /* Interactive Elements */
-    --primary: 217 91% 59%;
-    --primary-foreground: 220 20% 6%;
-    --primary-glow: 217 91% 70%;
+    /* Interactive Elements - electric green accent */
+    --primary: 119 99% 46%;
+    --primary-foreground: 0 0% 4%;
+    --primary-glow: 119 99% 60%;
 
-    --secondary: 220 15% 15%;
-    --secondary-foreground: 220 10% 90%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 96%;
 
-    --accent: 270 91% 65%;
-    --accent-foreground: 220 20% 6%;
-    --accent-glow: 270 91% 75%;
+    --accent: 119 99% 46%;
+    --accent-foreground: 0 0% 4%;
+    --accent-glow: 119 99% 60%;
 
-    /* Purple variant for special highlights */
-    --purple: 270 95% 75%;
-    --purple-foreground: 220 20% 6%;
+    --purple: 119 99% 60%;
+    --purple-foreground: 0 0% 4%;
 
     /* Muted Elements */
-    --muted: 220 15% 12%;
-    --muted-foreground: 220 10% 65%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 65%;
 
     /* Status Colors */
     --success: 142 76% 36%;
     --warning: 38 92% 50%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 220 10% 95%;
+    --destructive-foreground: 0 0% 96%;
 
     /* Borders & Inputs */
-    --border: 220 15% 15%;
-    --input: 220 15% 12%;
-    --ring: 217 91% 59%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 119 99% 46%;
 
     /* Design System Enhancements */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-glow)));
     --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card-hover)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--background)), hsl(220 25% 8%));
-    
-    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.15);
-    --shadow-card: 0 4px 20px hsl(220 20% 4% / 0.4);
-    --shadow-elevation: 0 10px 40px hsl(220 20% 4% / 0.6);
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%));
 
-    --radius: 0.75rem;
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.25);
+    --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
+    --shadow-elevation: 0 10px 40px hsl(0 0% 0% / 0.6);
 
-    --sidebar-background: 0 0% 98%;
+    --radius: 0.5rem;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-primary: 119 99% 46%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 119 99% 46%;
   }
 
   .dark {
@@ -128,8 +120,9 @@
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Syne', system-ui, sans-serif;
+    font-family: 'Sora', system-ui, sans-serif;
     letter-spacing: -0.02em;
+    font-weight: 700;
   }
 }
 
@@ -162,7 +155,7 @@
 
   /* Gradient Text */
   .gradient-text {
-    background: linear-gradient(135deg, hsl(217 91% 70%), hsl(270 95% 80%));
+    background: linear-gradient(135deg, hsl(119 99% 60%), hsl(119 99% 46%));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
