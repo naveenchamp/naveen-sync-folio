@@ -74,24 +74,31 @@ export interface FeaturedProject {
   image?: string;
 }
 
+import portfolioImg from "@/assets/project-portfolio.jpg";
+import weatherImg from "@/assets/project-weather.jpg";
+import cricketImg from "@/assets/project-cricket.jpg";
+
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
     title: "Portfolio (this site)",
     description: "Live portfolio that auto-syncs projects from GitHub with a polished React UI.",
     tech: ["React", "TypeScript", "Tailwind"],
     repoUrl: "https://github.com/naveenchamp",
+    image: portfolioImg,
   },
   {
     title: "Weather Forecast App",
     description: "Real-time weather tool with location-based forecasts and clean data viz.",
     tech: ["React", "API", "JavaScript"],
     repoUrl: "https://github.com/naveenchamp",
+    image: weatherImg,
   },
   {
     title: "Cricket Data System",
     description: "Backend service that aggregates and serves live cricket stats via REST endpoints.",
     tech: ["Node.js", "Python", "SQL"],
     repoUrl: "https://github.com/naveenchamp",
+    image: cricketImg,
   },
 ];
 
