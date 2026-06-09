@@ -1,6 +1,9 @@
 // ============================================================
 // Centralized Portfolio Configuration
 // ============================================================
+import portfolioImg from "@/assets/project-portfolio.jpg";
+import weatherImg from "@/assets/project-weather.jpg";
+import cricketImg from "@/assets/project-cricket.jpg";
 
 export const PERSONAL_INFO = {
   name: "Naveen Reddy Tippasani",
