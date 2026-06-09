@@ -11,7 +11,7 @@ import ScrollAnimations from "@/components/portfolio/ScrollAnimations";
 import SplineBackground from "@/components/portfolio/SplineBackground";
 
 const Index = () => (
-  <div className="relative min-h-screen bg-background/40">
+  <div className="relative min-h-screen bg-transparent">
     <SplineBackground />
     <ScrollAnimations />
     <Navigation />

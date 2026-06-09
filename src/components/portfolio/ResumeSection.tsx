@@ -136,7 +136,7 @@ const ResumeSection = () => {
   };
 
   return (
-    <section id="resume" className="py-20 bg-muted/30">
+    <section id="resume" className="py-20 bg-transparent">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}

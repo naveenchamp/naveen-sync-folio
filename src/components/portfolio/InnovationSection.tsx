@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 const InnovationSection = () => {
 
   return (
-    <section id="innovation" className="py-20 bg-card relative overflow-hidden">
+    <section id="innovation" className="py-20 bg-transparent relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute top-20 left-20 w-64 h-64 bg-primary rounded-full blur-3xl"></div>
