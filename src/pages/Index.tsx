@@ -4,7 +4,7 @@ import AboutSection from "@/components/portfolio/AboutSection";
 import EnhancedProjectsSection from "@/components/portfolio/EnhancedProjectsSection";
 import InteractiveSkillsSection from "@/components/portfolio/InteractiveSkillsSection";
 import InnovationSection from "@/components/portfolio/InnovationSection";
-import ResumeDisplay from "@/components/portfolio/ResumeDisplay";
+
 import EnhancedContactSection from "@/components/portfolio/EnhancedContactSection";
 import Footer from "@/components/portfolio/Footer";
 import ScrollAnimations from "@/components/portfolio/ScrollAnimations";
@@ -21,7 +21,7 @@ const Index = () => (
       <EnhancedProjectsSection />
       <InteractiveSkillsSection />
       <InnovationSection />
-      <ResumeDisplay />
+      
       <EnhancedContactSection />
     </main>
     <Footer />

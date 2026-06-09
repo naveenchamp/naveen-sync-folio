@@ -41,7 +41,7 @@ const EnhancedProjectsSection = () => {
   if (isLoading) return <ProjectLoadingState />;
 
   return (
-    <section id="projects" className="py-20 bg-transparent scroll-mt-20">
+    <section id="projects" className="py-20 bg-background/60 backdrop-blur-md scroll-mt-20">
       <div className="container mx-auto px-6">
         <div className="max-w-7xl mx-auto">
           <FeaturedProjects />

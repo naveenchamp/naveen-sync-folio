@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { SKILL_CATEGORIES } from "@/config/portfolio";
 
 const InteractiveSkillsSection = () => (
-  <section id="skills" className="py-20 bg-transparent scroll-mt-20">
+  <section id="skills" className="py-20 bg-background/60 backdrop-blur-md scroll-mt-20">
     <div className="container mx-auto px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16 fade-in">
