@@ -23,7 +23,7 @@ const ResumeDisplay = () => {
   };
 
   return (
-    <section id="resume" className="py-20 bg-muted/30">
+    <section id="resume" className="py-20 bg-transparent">
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           {/* Section Header */}
