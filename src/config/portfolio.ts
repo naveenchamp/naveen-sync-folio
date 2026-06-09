@@ -77,9 +77,6 @@ export interface FeaturedProject {
   image?: string;
 }
 
-import portfolioImg from "@/assets/project-portfolio.jpg";
-import weatherImg from "@/assets/project-weather.jpg";
-import cricketImg from "@/assets/project-cricket.jpg";
 
 export const FEATURED_PROJECTS: FeaturedProject[] = [
   {
