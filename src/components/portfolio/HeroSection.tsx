@@ -82,33 +82,14 @@ const HeroSection = () => {
       onMouseMove={onMouseMove}
       className="relative min-h-screen overflow-hidden pt-24 pb-16 px-4"
     >
-      {/* Soft dim + radial highlight to tame the space background */}
-      <div className="absolute inset-0 -z-[1] pointer-events-none bg-background/55 backdrop-blur-[2px]" />
+      {/* Subtle vignette only — let the 3D background breathe, no green/white wash */}
       <div
         className="absolute inset-0 -z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at 20% 30%, hsl(var(--primary)/0.18), transparent 55%), radial-gradient(circle at 80% 70%, hsl(var(--primary-glow)/0.12), transparent 50%)",
+            "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)/0.55) 80%)",
         }}
       />
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 -z-[1] pointer-events-none overflow-hidden">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute block rounded-full bg-primary/40"
-            style={{
-              width: `${2 + (i % 4)}px`,
-              height: `${2 + (i % 4)}px`,
-              left: `${(i * 53) % 100}%`,
-              top: `${(i * 37) % 100}%`,
-              animation: `floatY ${6 + (i % 5)}s ease-in-out ${i * 0.3}s infinite alternate`,
-              opacity: 0.5,
-            }}
-          />
-        ))}
-      </div>
 
       <div className="container mx-auto relative z-10">
         {/* Top badge */}
@@ -188,7 +169,7 @@ const HeroSection = () => {
                 <Button
                   size="lg"
                   onClick={() => scrollTo("projects")}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_40px_hsl(var(--primary)/0.45)] px-6"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_8px_24px_hsl(var(--primary)/0.25)] px-6"
                 >
                   Explore My Work
                 </Button>
@@ -257,12 +238,12 @@ const HeroSection = () => {
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            {/* Glow */}
-            <div className="absolute -inset-6 bg-primary/20 blur-3xl rounded-full -z-10" />
+            {/* Subtle indigo glow (no heavy green) */}
+            <div className="absolute -inset-6 bg-secondary/15 blur-3xl rounded-full -z-10" />
 
             {/* Main card */}
             <div
-              className="relative rounded-2xl border border-primary/30 bg-card/70 backdrop-blur-xl p-6 shadow-[0_20px_60px_hsl(var(--primary)/0.25)]"
+              className="relative rounded-2xl border border-border/70 bg-card/80 backdrop-blur-xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
               style={{ animation: "floatCard 6s ease-in-out infinite" }}
             >
               <div className="flex items-center justify-between mb-5">
