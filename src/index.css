@@ -6,64 +6,66 @@
 
 @layer base {
   :root {
-    /* Core Background & Text - Dark green-accent theme */
-    --background: 0 0% 10%;
-    --foreground: 0 0% 96%;
+    /* Core Background & Text - Linear/Vercel inspired */
+    --background: 230 60% 4%;        /* #050816 */
+    --foreground: 210 40% 98%;       /* #F8FAFC */
 
-    /* Card System */
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 96%;
-    --card-hover: 0 0% 15%;
+    /* Card / Surface System */
+    --card: 222 47% 12%;             /* #111827 */
+    --card-foreground: 210 40% 98%;
+    --card-hover: 222 47% 16%;
+    --surface: 222 47% 8%;           /* #0B1120 */
 
-    /* Interactive Elements - electric green accent */
-    --primary: 119 99% 46%;
-    --primary-foreground: 0 0% 4%;
-    --primary-glow: 119 99% 60%;
+    /* Primary Accent - emerald green (used sparingly) */
+    --primary: 142 71% 45%;          /* #22C55E */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 142 71% 55%;
 
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 0 0% 96%;
+    /* Secondary Accent - indigo */
+    --secondary: 239 84% 67%;        /* #6366F1 */
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 119 99% 46%;
-    --accent-foreground: 0 0% 4%;
-    --accent-glow: 119 99% 60%;
+    --accent: 142 71% 45%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 239 84% 67%;
 
-    --purple: 119 99% 60%;
-    --purple-foreground: 0 0% 4%;
+    --purple: 239 84% 67%;
+    --purple-foreground: 0 0% 100%;
 
     /* Muted Elements */
-    --muted: 0 0% 16%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 222 47% 14%;
+    --muted-foreground: 215 20% 65%; /* #94A3B8 */
 
     /* Status Colors */
-    --success: 142 76% 36%;
+    --success: 142 71% 45%;
     --warning: 38 92% 50%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 96%;
+    --destructive-foreground: 0 0% 98%;
 
     /* Borders & Inputs */
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 119 99% 46%;
+    --border: 222 47% 18%;
+    --input: 222 47% 18%;
+    --ring: 142 71% 45%;
 
     /* Design System Enhancements */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent-glow)));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
     --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card-hover)));
-    --gradient-hero: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%));
+    --gradient-hero: linear-gradient(135deg, hsl(230 60% 4%), hsl(222 47% 8%));
 
-    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 40px hsl(var(--primary) / 0.18);
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.4);
     --shadow-elevation: 0 10px 40px hsl(0 0% 0% / 0.6);
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 10%;
-    --sidebar-foreground: 0 0% 96%;
-    --sidebar-primary: 119 99% 46%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 16%;
-    --sidebar-accent-foreground: 0 0% 96%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 119 99% 46%;
+    --sidebar-background: 230 60% 4%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 142 71% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 47% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 47% 18%;
+    --sidebar-ring: 142 71% 45%;
   }
 
   .dark {
