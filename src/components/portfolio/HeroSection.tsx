@@ -82,33 +82,14 @@ const HeroSection = () => {
       onMouseMove={onMouseMove}
       className="relative min-h-screen overflow-hidden pt-24 pb-16 px-4"
     >
-      {/* Soft dim + radial highlight to tame the space background */}
-      <div className="absolute inset-0 -z-[1] pointer-events-none bg-background/55 backdrop-blur-[2px]" />
+      {/* Subtle vignette only — let the 3D background breathe, no green/white wash */}
       <div
         className="absolute inset-0 -z-[1] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at 20% 30%, hsl(var(--primary)/0.18), transparent 55%), radial-gradient(circle at 80% 70%, hsl(var(--primary-glow)/0.12), transparent 50%)",
+            "radial-gradient(ellipse at center, transparent 0%, hsl(var(--background)/0.55) 80%)",
         }}
       />
-
-      {/* Floating particles */}
-      <div className="absolute inset-0 -z-[1] pointer-events-none overflow-hidden">
-        {Array.from({ length: 18 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute block rounded-full bg-primary/40"
-            style={{
-              width: `${2 + (i % 4)}px`,
-              height: `${2 + (i % 4)}px`,
-              left: `${(i * 53) % 100}%`,
-              top: `${(i * 37) % 100}%`,
-              animation: `floatY ${6 + (i % 5)}s ease-in-out ${i * 0.3}s infinite alternate`,
-              opacity: 0.5,
-            }}
-          />
-        ))}
-      </div>
 
       <div className="container mx-auto relative z-10">
         {/* Top badge */}
