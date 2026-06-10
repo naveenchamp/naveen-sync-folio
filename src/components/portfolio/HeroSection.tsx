@@ -238,12 +238,12 @@ const HeroSection = () => {
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            {/* Glow */}
-            <div className="absolute -inset-6 bg-primary/20 blur-3xl rounded-full -z-10" />
+            {/* Subtle indigo glow (no heavy green) */}
+            <div className="absolute -inset-6 bg-secondary/15 blur-3xl rounded-full -z-10" />
 
             {/* Main card */}
             <div
-              className="relative rounded-2xl border border-primary/30 bg-card/70 backdrop-blur-xl p-6 shadow-[0_20px_60px_hsl(var(--primary)/0.25)]"
+              className="relative rounded-2xl border border-border/70 bg-card/80 backdrop-blur-xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
               style={{ animation: "floatCard 6s ease-in-out infinite" }}
             >
               <div className="flex items-center justify-between mb-5">
