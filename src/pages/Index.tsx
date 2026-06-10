@@ -1,28 +1,34 @@
 import Navigation from "@/components/portfolio/Navigation";
 import HeroSection from "@/components/portfolio/HeroSection";
-import AboutSection from "@/components/portfolio/AboutSection";
-import EnhancedProjectsSection from "@/components/portfolio/EnhancedProjectsSection";
-import InteractiveSkillsSection from "@/components/portfolio/InteractiveSkillsSection";
-import InnovationSection from "@/components/portfolio/InnovationSection";
-
-import EnhancedContactSection from "@/components/portfolio/EnhancedContactSection";
+import JourneySection from "@/components/portfolio/JourneySection";
+import DigitalDashboard from "@/components/portfolio/DigitalDashboard";
+import FeaturedShowcase from "@/components/portfolio/FeaturedShowcase";
+import AILab from "@/components/portfolio/AILab";
+import ContentEngine from "@/components/portfolio/ContentEngine";
+import SkillsGalaxy from "@/components/portfolio/SkillsGalaxy";
+import Achievements from "@/components/portfolio/Achievements";
+import CurrentMission from "@/components/portfolio/CurrentMission";
+import AskAI from "@/components/portfolio/AskAI";
+import MissionBrief from "@/components/portfolio/MissionBrief";
 import Footer from "@/components/portfolio/Footer";
-import ScrollAnimations from "@/components/portfolio/ScrollAnimations";
-import SplineBackground from "@/components/portfolio/SplineBackground";
+import Background from "@/components/portfolio/Background";
 
 const Index = () => (
-  <div className="relative min-h-screen bg-transparent">
-    <SplineBackground />
-    <ScrollAnimations />
+  <div className="relative min-h-screen">
+    <Background />
     <Navigation />
     <main className="relative z-10">
       <HeroSection />
-      <AboutSection />
-      <EnhancedProjectsSection />
-      <InteractiveSkillsSection />
-      <InnovationSection />
-      
-      <EnhancedContactSection />
+      <JourneySection />
+      <DigitalDashboard />
+      <FeaturedShowcase />
+      <AILab />
+      <ContentEngine />
+      <SkillsGalaxy />
+      <Achievements />
+      <CurrentMission />
+      <AskAI />
+      <MissionBrief />
     </main>
     <Footer />
   </div>
