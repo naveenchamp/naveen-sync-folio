@@ -169,7 +169,7 @@ const HeroSection = () => {
                 <Button
                   size="lg"
                   onClick={() => scrollTo("projects")}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_40px_hsl(var(--primary)/0.45)] px-6"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_8px_24px_hsl(var(--primary)/0.25)] px-6"
                 >
                   Explore My Work
                 </Button>
