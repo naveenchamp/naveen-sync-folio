@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Target, BookOpen, Hammer, Handshake } from "lucide-react";
 
-const widgets = [
+type Accent = "primary" | "secondary";
+const widgets: { icon: typeof Target; title: string; color: Accent; items: string[] }[] = [
   {
     icon: Target,
     title: "Current Focus",
@@ -28,6 +29,21 @@ const widgets = [
   },
 ];
 
+const accentStyles: Record<Accent, { box: string; icon: string; dot: string; bullet: string }> = {
+  primary: {
+    box: "bg-primary/15 border-primary/40",
+    icon: "text-primary",
+    dot: "bg-primary",
+    bullet: "bg-primary",
+  },
+  secondary: {
+    box: "bg-secondary/15 border-secondary/40",
+    icon: "text-secondary",
+    dot: "bg-secondary",
+    bullet: "bg-secondary",
+  },
+};
+
 const DigitalDashboard = () => (
   <section id="dashboard" className="relative py-28 scroll-mt-20">
     <div className="container mx-auto px-6">
@@ -48,7 +64,7 @@ const DigitalDashboard = () => (
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {widgets.map((w, i) => {
-            const accent = w.color === "primary" ? "primary" : "secondary";
+            const s = accentStyles[w.color];
             return (
               <motion.div
                 key={w.title}
@@ -60,13 +76,13 @@ const DigitalDashboard = () => (
               >
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-3">
-                    <div className={`w-11 h-11 rounded-xl bg-${accent}/15 border border-${accent}/40 flex items-center justify-center`}>
-                      <w.icon className={`w-5 h-5 text-${accent}`} />
+                    <div className={`w-11 h-11 rounded-xl border flex items-center justify-center ${s.box}`}>
+                      <w.icon className={`w-5 h-5 ${s.icon}`} />
                     </div>
                     <h3 className="font-display text-lg font-semibold">{w.title}</h3>
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
-                    <span className={`w-1.5 h-1.5 rounded-full bg-${accent} animate-pulse`} />
+                    <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${s.dot}`} />
                     Live
                   </div>
                 </div>
@@ -76,7 +92,7 @@ const DigitalDashboard = () => (
                       key={it}
                       className="flex items-center gap-3 text-sm text-foreground/85 px-3 py-2 rounded-lg bg-background/40 border border-border/50 group-hover:border-border transition-colors"
                     >
-                      <span className={`w-1 h-1 rounded-full bg-${accent}`} />
+                      <span className={`w-1 h-1 rounded-full ${s.bullet}`} />
                       {it}
                     </li>
                   ))}

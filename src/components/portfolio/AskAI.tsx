@@ -5,7 +5,7 @@ import { Send, Sparkles, Loader2, Bot, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 
 const SUGGESTED = [
   "Who is Naveen?",
@@ -37,7 +37,6 @@ const AskAI = () => {
     setMessages((m) => [...m, { role: "assistant", content: "" }]);
 
     try {
-      const SUPABASE_URL = (supabase as unknown as { supabaseUrl: string }).supabaseUrl;
       const resp = await fetch(`${SUPABASE_URL}/functions/v1/ask-naveen`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
