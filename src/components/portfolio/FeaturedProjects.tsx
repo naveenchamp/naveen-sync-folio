@@ -27,7 +27,7 @@ const FeaturedProjects = () => (
           </div>
           <div className="p-6 space-y-4">
             <h4 className="heading-sm group-hover:text-primary transition-colors">{project.title}</h4>
-            <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">{project.solution}</p>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((t) => (
                 <Badge key={t} variant="outline" className="text-xs bg-muted/40 border-border">
