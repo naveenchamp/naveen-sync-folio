@@ -37,6 +37,17 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen overflow-hidden pt-28 pb-20 px-4">
+      {/* Spline galaxy — Hero only */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <iframe
+          src="https://my.spline.design/particlenebula-Ie80VUenl2ONwWudsGGpn6dO/"
+          frameBorder="0"
+          loading="lazy"
+          title="Particle Nebula"
+          className="w-full h-full opacity-60"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/40 to-background" />
+      </div>
       <div className="container mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
