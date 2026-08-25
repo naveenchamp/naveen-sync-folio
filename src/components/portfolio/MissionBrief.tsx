@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Github, Linkedin, Mail, Rocket } from "lucide-react";
+import { Send, Github, Linkedin, Mail, Rocket, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/hooks/use-toast";
 import { PERSONAL_INFO } from "@/config/portfolio";
+import { supabase } from "@/integrations/supabase/client";
+import { FunctionsHttpError } from "@supabase/supabase-js";
 
 const MISSION_TYPES = [
   "Website Development",
@@ -25,18 +27,56 @@ const MissionBrief = () => {
   const toggle = (t: string) =>
     setSelected((s) => (s.includes(t) ? s.filter((x) => x !== t) : [...s, t]));
 
-  const submit = (e: React.FormEvent) => {
+  const reset = () => {
+    setForm({ name: "", email: "", message: "" });
+    setSelected([]);
+  };
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const subject = encodeURIComponent(
-      `Mission Brief: ${selected.length ? selected.join(", ") : "New Inquiry"}`
-    );
-    const body = encodeURIComponent(
-      `Hi Naveen,\n\nMission types: ${selected.join(", ") || "—"}\n\n${form.message}\n\n— ${form.name}\n${form.email}`
-    );
-    window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`;
-    toast({ title: "Mission dispatched", description: "Your email client should be open." });
-    setSubmitting(false);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("send-mission-brief", {
+        body: {
+          name: form.name,
+          email: form.email,
+          mission_types: selected,
+          message: form.message,
+        },
+      });
+
+      if (error) {
+        let details = error.message;
+        if (error instanceof FunctionsHttpError) {
+          details = (await error.context.text()) || details;
+        }
+        console.error("Mission brief failed:", details);
+        toast({
+          title: "Transmission failed",
+          description: "Could not send your brief. Please try again or email directly.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Mission dispatched",
+        description: data?.forwarded
+          ? "Your brief has been sent and forwarded to Naveen's automation pipeline."
+          : "Your brief has been saved. Naveen will be in touch soon.",
+      });
+      reset();
+    } catch (err) {
+      console.error("Mission brief error:", err);
+      toast({
+        title: "Transmission failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -129,7 +169,15 @@ const MissionBrief = () => {
                 disabled={submitting}
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white font-semibold"
               >
-                <Rocket className="w-4 h-4 mr-2" /> Initiate Mission
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending...
+                  </>
+                ) : (
+                  <>
+                    <Rocket className="w-4 h-4 mr-2" /> Initiate Mission
+                  </>
+                )}
               </Button>
             </form>
 
