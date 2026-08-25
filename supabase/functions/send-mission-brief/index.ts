@@ -1,11 +1,15 @@
 // Mission Brief handler: saves contact form submissions to the database
 // and forwards them to an optional n8n webhook for email/CRM automation.
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-};
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { z } from "npm:zod";
+
+const BriefSchema = z.object({
+  name: z.string().min(1).max(255),
+  email: z.string().email().max(255),
+  mission_types: z.array(z.string().max(100)).default([]),
+  message: z.string().min(1).max(5000),
+});
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -13,14 +17,17 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { name, email, mission_types, message } = await req.json();
+    const raw = await req.json().catch(() => null);
+    const parsed = BriefSchema.safeParse(raw);
 
-    if (!name?.trim() || !email?.trim() || !message?.trim()) {
+    if (!parsed.success) {
       return new Response(
-        JSON.stringify({ error: "Name, email, and message are required" }),
+        JSON.stringify({ error: parsed.error.flatten().fieldErrors }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
+
+    const { name, email, mission_types, message } = parsed.data;
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY");
@@ -35,7 +42,7 @@ Deno.serve(async (req) => {
     const payload = {
       name: name.trim(),
       email: email.trim(),
-      mission_types: Array.isArray(mission_types) ? mission_types : [],
+      mission_types,
       message: message.trim(),
       status: "new",
       source: "website",
